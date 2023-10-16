@@ -27,7 +27,12 @@ const corsOptions = {
   credentials: true,
 };
 
-dbConnect();
+//dbConnect();
+
+//testing
+import connection from "./models/db.js";
+
+
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json({ type: "application/vnd.api+json", strict: false }));
