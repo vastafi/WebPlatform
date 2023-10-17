@@ -34,7 +34,11 @@ import connection from "./models/db.js";
 
 
 
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
+app.use(cors({
+  origin: '*'
+}));
+
 app.use(bodyParser.json({ type: "application/vnd.api+json", strict: false }));
 
 app.get("/", function (req, res) {
