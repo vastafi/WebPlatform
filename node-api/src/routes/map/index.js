@@ -1,5 +1,4 @@
-/*
-module.exports = mapRoutes => {
+module.exports = app => {
     const maps = require("../controllers/map.controller.js");
     var router = require("express").Router();
 
@@ -9,9 +8,11 @@ module.exports = mapRoutes => {
     router.put("/", maps.update);
     router.delete("/:id", maps.delete);
     router.delete("/", maps.delelteAll);
-};
-*/
 
+    app.use('api/maps', router);
+};
+
+/*
 const maps = require("../controllers/map.controller.js");
 var router = require("express").Router();
 
@@ -23,3 +24,4 @@ router.delete("/:id", maps.delete);
 router.delete("/", maps.delelteAll);
 
 export default router;
+ */
