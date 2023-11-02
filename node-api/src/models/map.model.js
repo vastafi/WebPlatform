@@ -1,4 +1,5 @@
-const sql = require("./db.js");
+//const sql = require("./db.js");
+import sql from "./db.js";
 
 const Map = function(map) {
     this.zoom = map.zoom;
@@ -108,5 +109,4 @@ Map.removeAll = result => {
         result(null, res);
     });
 };
-
-module.exports = Map;
+export default Map;

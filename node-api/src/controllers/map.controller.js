@@ -1,6 +1,11 @@
-const Map = require("../src/models/map.model");
+//const Map = require("../src/models/map.model");
+import Map from "../models/map.model.js";
 
-exports.create = (req, res) => {
+const MapController = function() {
+
+}
+
+MapController.create = (req, res) => {
     if (!req.body) {
         res.status(400).send({
             message: "Content can not be empty."
@@ -25,7 +30,7 @@ exports.create = (req, res) => {
     });
 };
 
-exports.findOne = (req, res) => {
+MapController.findOne = (req, res) => {
     Map.findById(req.params.id, (err, data) => {
         if (err) {
             if (err.kind === "not_found") {
@@ -43,7 +48,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-exports.findAll = (req, res) => {
+MapController.findAll = (req, res) => {
     const name = req.query.name;
 
     Map.getAll(name, (err, data) => {
@@ -57,7 +62,7 @@ exports.findAll = (req, res) => {
     });
 };
 
-exports.update = (req, res) => {
+MapController.update = (req, res) => {
     if (!req.body) {
         res.status(400).send({
             message: "Content can not be empty."
@@ -86,7 +91,7 @@ exports.update = (req, res) => {
     );
 };
 
-exports.delete = (req, res) => {
+MapController.delete = (req, res) => {
     Map.remove(req.params.id, (err, data) => {
         if (err) {
             if (err.kind === "not_found") {
@@ -104,7 +109,7 @@ exports.delete = (req, res) => {
     });
 };
 
-exports.deleteAll = (req, res) => {
+MapController.deleteAll = (req, res) => {
     Map.removeAll((err, data) => {
         if (err) {
             res.status(500).send({
@@ -114,3 +119,5 @@ exports.deleteAll = (req, res) => {
         else res.send({message: `All maps were deleted successfully.`});
     });
 };
+
+export default MapController;

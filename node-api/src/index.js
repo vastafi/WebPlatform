@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 //import "./passport.js";
 //import { dbConnect } from "./mongo";
-import { meRoutes, authRoutes } from "./routes";
+import { meRoutes, authRoutes, mapRoutes } from "./routes";
 //import mapRoutes from "./routes/map/index.js";
 import path from "path";
 import * as fs from "fs";
@@ -47,7 +47,8 @@ app.get("/", function (req, res) {
 
 app.use("/", authRoutes);
 app.use("/me", meRoutes);
-require(".routes/map/index.js")(app);
+app.use('api/maps', mapRoutes);
+
 
 if (process.env.SCHEDULE_HOUR) {
   cron.schedule(`0 */${process.env.SCHEDULE_HOUR} * * *'`, () => {
