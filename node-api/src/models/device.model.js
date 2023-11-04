@@ -1,29 +1,26 @@
 //const sql = require("./db.js");
 import sql from "./db.js";
 
-const Map = function(map) {
-    this.zoom = map.zoom;
-    this.centerLat = map.centerLat;
-    this.centerLng = map.centerLng;
+const Device = function(device) {
     this.name = map.name;
-    this.date = map.date;
+    this.num = map.num;
 }
 
-Map.create = (newMap, result) => {
-    sql.query("INSERT INTO map SET ?", newMap, (err, res) => {
+Device.create = (newDevice, result) => {
+    sql.query("INSERT INTO device SET ?", newDevice, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
             return;
         }
 
-        console.log("created map: ", {map_id: res.insertId, ...newMap});
-        result(null, {id: res.insertId, ...newMap});
+        console.log("created device: ", {device_id: res.insertId, ...newDevice});
+        result(null, {id: res.insertId, ...newDevice});
     });
 };
 
-Map.findById = (id, result) => {
-    sql.query(`SELECT * FROM map WHERE map_id = ${id}`, (err, res) => {
+Device.findById = (id, result) => {
+    sql.query(`SELECT * FROM device WHERE device_id = ${id}`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -31,7 +28,7 @@ Map.findById = (id, result) => {
         }
 
         if (res.length) {
-            console.log("found map: ", res[0]);
+            console.log("found device: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -40,8 +37,8 @@ Map.findById = (id, result) => {
     });
 };
 
-Map.getAll = (name, result) => {
-    let query = "SELECT * FROM map";
+Device.getAll = (name, result) => {
+    let query = "SELECT * FROM device";
     if (name) {
         query += `WHERE name LIKE '%{name}%'`;
     }
@@ -53,15 +50,15 @@ Map.getAll = (name, result) => {
             return;
         }
 
-        console.log("maps: ", res);
+        console.log("devices: ", res);
         result(null, res);
     });
 };
 
-Map.updateById = (id, map, result) => {
+Device.updateById = (id, device, result) => {
     sql.query(
-        "UPDATE map SET zoom = ?, centerLat = ?, centerLng = ?, name = ?, date = ? WHERE map_id = ?",
-        [map.zoom, map.centerLat, map.centerLng, map.name, map.date, id],
+        "UPDATE device SET name = ?, num = ? WHERE device_id = ?",
+        [device.name, device.num, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);
@@ -74,13 +71,13 @@ Map.updateById = (id, map, result) => {
                 return;
             }
 
-            console.log("updated map: ", {id: id, ...map});
-            result(null, {id: id, ...map});
-    });
+            console.log("updated device: ", {id: id, ...device});
+            result(null, {id: id, ...device});
+        });
 };
 
-Map.remove = (id, result) => {
-    sql.query("DELETE FROM map WHERE id = ?", id, (err, res) => {
+Device.remove = (id, result) => {
+    sql.query("DELETE FROM device WHERE id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -92,22 +89,22 @@ Map.remove = (id, result) => {
             return;
         }
 
-        console.log("deleted map with id: ", id);
+        console.log("deleted device with id: ", id);
         result(null, res);
     });
 };
 
-Map.removeAll = result => {
-    sql.query("DELETE FROM map", (err, res) => {
+Device.removeAll = result => {
+    sql.query("DELETE FROM device", (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
             return;
         }
 
-        console.log(`deleted ${res.affectedRows} maps`);
+        console.log(`deleted ${res.affectedRows} devices`);
         result(null, res);
     });
 };
 
-export default Map;
+export default Device;

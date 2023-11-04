@@ -1,29 +1,27 @@
-//const sql = require("./db.js");
 import sql from "./db.js";
 
-const Map = function(map) {
-    this.zoom = map.zoom;
-    this.centerLat = map.centerLat;
-    this.centerLng = map.centerLng;
-    this.name = map.name;
-    this.date = map.date;
+const Coordinate = function(coordinate) {
+    this.lat = coordinate.lat;
+    this.lng = coordinate.lng;
+    this.num = coordinate.num;
+    this.map_id = coordinate.map_id;
 }
 
-Map.create = (newMap, result) => {
-    sql.query("INSERT INTO map SET ?", newMap, (err, res) => {
+Coordinate.create = (newCoordinate, result) => {
+    sql.query("INSERT INTO coordinate SET ?", newCoordinate, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
             return;
         }
 
-        console.log("created map: ", {map_id: res.insertId, ...newMap});
-        result(null, {id: res.insertId, ...newMap});
+        console.log("created coordinate: ", {coordinate_id: res.insertId, ...newCoordinate});
+        result(null, {id: res.insertId, ...newCoordinate});
     });
 };
 
-Map.findById = (id, result) => {
-    sql.query(`SELECT * FROM map WHERE map_id = ${id}`, (err, res) => {
+Coordinate.findById = (id, result) => {
+    sql.query(`SELECT * FROM coordinate WHERE coordinate_id = ${id}`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -31,7 +29,7 @@ Map.findById = (id, result) => {
         }
 
         if (res.length) {
-            console.log("found map: ", res[0]);
+            console.log("found coordinate: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -40,11 +38,8 @@ Map.findById = (id, result) => {
     });
 };
 
-Map.getAll = (name, result) => {
-    let query = "SELECT * FROM map";
-    if (name) {
-        query += `WHERE name LIKE '%{name}%'`;
-    }
+Coordinate.getAll = (result) => {
+    let query = "SELECT * FROM coordinate";
 
     sql.query(query, (err, res) => {
         if (err) {
@@ -53,15 +48,15 @@ Map.getAll = (name, result) => {
             return;
         }
 
-        console.log("maps: ", res);
+        console.log("coordinates: ", res);
         result(null, res);
     });
 };
 
-Map.updateById = (id, map, result) => {
+Coordinate.updateById = (id, coordinate, result) => {
     sql.query(
-        "UPDATE map SET zoom = ?, centerLat = ?, centerLng = ?, name = ?, date = ? WHERE map_id = ?",
-        [map.zoom, map.centerLat, map.centerLng, map.name, map.date, id],
+        "UPDATE coordinate SET lat = ?, lng = ?, num = ?, map_id = ? WHERE coordinate_id = ?",
+        [coordinate.lat, coordinate.lng, coordinate.num, coordinate.map_id, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);
@@ -74,13 +69,13 @@ Map.updateById = (id, map, result) => {
                 return;
             }
 
-            console.log("updated map: ", {id: id, ...map});
+            console.log("updated coordinate: ", {id: id, ...coordinate});
             result(null, {id: id, ...map});
-    });
+        });
 };
 
-Map.remove = (id, result) => {
-    sql.query("DELETE FROM map WHERE id = ?", id, (err, res) => {
+Coordinate.remove = (id, result) => {
+    sql.query("DELETE FROM coordinate WHERE id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -92,22 +87,22 @@ Map.remove = (id, result) => {
             return;
         }
 
-        console.log("deleted map with id: ", id);
+        console.log("deleted coordinate with id: ", id);
         result(null, res);
     });
 };
 
-Map.removeAll = result => {
-    sql.query("DELETE FROM map", (err, res) => {
+Coordinate.removeAll = result => {
+    sql.query("DELETE FROM coordinate", (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
             return;
         }
 
-        console.log(`deleted ${res.affectedRows} maps`);
+        console.log(`deleted ${res.affectedRows} coordinates`);
         result(null, res);
     });
 };
 
-export default Map;
+export default Coordinate;
