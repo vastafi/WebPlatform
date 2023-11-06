@@ -77,7 +77,7 @@ Device.updateById = (id, device, result) => {
 };
 
 Device.remove = (id, result) => {
-    sql.query("DELETE FROM device WHERE id = ?", id, (err, res) => {
+    sql.query("DELETE FROM device WHERE device_id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);

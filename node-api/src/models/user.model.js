@@ -72,7 +72,7 @@ User.updateById = (id, user, result) => {
 };
 
 User.remove = (id, result) => {
-    sql.query("DELETE FROM user WHERE id = ?", id, (err, res) => {
+    sql.query("DELETE FROM user WHERE user_id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);

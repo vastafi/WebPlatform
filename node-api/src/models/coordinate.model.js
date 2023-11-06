@@ -75,7 +75,7 @@ Coordinate.updateById = (id, coordinate, result) => {
 };
 
 Coordinate.remove = (id, result) => {
-    sql.query("DELETE FROM coordinate WHERE id = ?", id, (err, res) => {
+    sql.query("DELETE FROM coordinate WHERE coordinate_id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);

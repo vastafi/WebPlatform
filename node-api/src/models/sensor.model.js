@@ -73,7 +73,7 @@ Sensor.updateById = (id, sensor, result) => {
 };
 
 Sensor.remove = (id, result) => {
-    sql.query("DELETE FROM sensor WHERE id = ?", id, (err, res) => {
+    sql.query("DELETE FROM sensor WHERE sensor_id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);

@@ -76,7 +76,7 @@ Mission.updateById = (id, mission, result) => {
 };
 
 Mission.remove = (id, result) => {
-    sql.query("DELETE FROM mission WHERE id = ?", id, (err, res) => {
+    sql.query("DELETE FROM mission WHERE mission_id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);

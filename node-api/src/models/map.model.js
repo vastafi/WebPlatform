@@ -80,7 +80,7 @@ Map.updateById = (id, map, result) => {
 };
 
 Map.remove = (id, result) => {
-    sql.query("DELETE FROM map WHERE id = ?", id, (err, res) => {
+    sql.query("DELETE FROM map WHERE map_id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
