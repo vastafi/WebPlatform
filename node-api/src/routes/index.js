@@ -1,4 +1,4 @@
-import userRoutes from './users';
+import userRoutes from './user';
 import meRoutes from './me';
 import authRoutes from './auth';
 import mapRoutes from './map';
