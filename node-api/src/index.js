@@ -31,7 +31,7 @@ const corsOptions = {
 //dbConnect();
 
 //testing
-//import connection from "./models/db.js";
+import connection from "./models/db.js";
 
 //app.use(cors(corsOptions));
 app.use(cors({
