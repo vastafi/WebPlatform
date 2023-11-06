@@ -117,4 +117,4 @@ SensorController.deleteAll = (req, res) => {
     });
 };
 
-export default MapController;
+export default SensorController;
