@@ -38,7 +38,12 @@ app.use(cors({
   origin: '*'
 }));
 
-app.use(bodyParser.json({ type: "application/vnd.api+json", strict: false }));
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  }),
+);
 
 app.get("/", function (req, res) {
   const __dirname = fs.realpathSync(".");

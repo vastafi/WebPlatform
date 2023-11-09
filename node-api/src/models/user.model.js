@@ -5,6 +5,8 @@ const User = function(user) {
 }
 
 User.create = (newUser, result) => {
+    console.log("user to create");
+    console.log(newUser);
     sql.query("INSERT INTO user SET ?", newUser, (err, res) => {
         if (err) {
             console.log("error: ", err);
