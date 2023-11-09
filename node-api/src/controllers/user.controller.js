@@ -62,20 +62,21 @@ UserController.update = (req, res) => {
         });
     }
 
+    console.log("body: ")
     console.log(req.body);
     User.updateById(
-        req.params.id,
+        req.body.id,
         new User(req.body),
         (err, data) => {
             if (err) {
                 if (err.kind === "not_found") {
                     res.status(404).send({
-                        message: `Not found user with id ${req.params.id}.`
+                        message: `Not found user with id ${req.body.id}.`
                     });
                 }
                 else {
                     res.status(500).send({
-                        message: "Error retrieving user with id " + req.params.id
+                        message: "Error retrieving user with id " + req.body.id
                     });
                 }
             }
