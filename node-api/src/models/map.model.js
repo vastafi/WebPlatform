@@ -1,4 +1,3 @@
-//const sql = require("./db.js");
 import sql from "./db.js";
 
 const Map = function(map) {

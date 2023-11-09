@@ -2,6 +2,10 @@ import sql from "./db.js";
 
 const User = function(user) {
     this.name = user.name;
+    this.email = user.email;
+    this.phone = user.phone;
+    this.description = user.description;
+    this.role = user.role;
 }
 
 User.create = (newUser, result) => {
@@ -54,8 +58,8 @@ User.getAll = (result) => {
 
 User.updateById = (id, user, result) => {
     sql.query(
-        "UPDATE user SET name = ? WHERE user_id = ?",
-        [user.name, id],
+        "UPDATE user SET name = ?, email = ?, phone = ?, description = ?, role = ? WHERE user_id = ?",
+        [user.name, user.email, user.phone, user.description, user.role, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);

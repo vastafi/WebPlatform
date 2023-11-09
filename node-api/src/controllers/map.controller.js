@@ -1,4 +1,3 @@
-//const Map = require("../src/models/map.model");
 import Map from "../models/map.model.js";
 
 const MapController = function() {

@@ -12,7 +12,11 @@ UserController.create = (req, res) => {
     }
 
     const user = new User({
-        name: req.body.name
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        description: req.body.description,
+        role: req.body.role
     });
 
     User.create(user, (err, data) => {

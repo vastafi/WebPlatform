@@ -52,7 +52,7 @@ app.get("/", function (req, res) {
 
 app.use("/", authRoutes);
 app.use("/me", meRoutes);
-app.use('api/maps', mapRoutes);
+app.use('/api/maps', mapRoutes);
 app.use('/api/users', userRoutes);
 
 

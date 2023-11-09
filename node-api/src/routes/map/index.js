@@ -3,8 +3,8 @@ const router = express.Router();
 import maps from "../../controllers/map.controller.js";
 
 router.post("/", maps.create);
-router.get("/api/maps/:id", maps.findOne);
-router.get("/api/maps", maps.findAll);
+router.get("/:id", maps.findOne);
+router.get("/", maps.findAll);
 router.put("/", maps.update);
 router.delete("/:id", maps.delete);
 router.delete("/", maps.deleteAll);
