@@ -48,6 +48,7 @@ Map.getAll = (result) => {
             return;
         }
 
+
         console.log("maps: ", res);
         result(null, res);
     });

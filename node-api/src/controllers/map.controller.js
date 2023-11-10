@@ -68,18 +68,18 @@ MapController.update = (req, res) => {
 
     console.log(req.body);
     Map.updateById(
-        req.params.id,
+        req.body.id,
         new Map(req.body),
         (err, data) => {
             if (err) {
                 if (err.kind === "not_found") {
                     res.status(404).send({
-                        message: `Not found map with id ${req.params.id}.`
+                        message: `Not found map with id ${req.body.id}.`
                     });
                 }
                 else {
                     res.status(500).send({
-                        message: "Error retrieving map with id " + req.params.id
+                        message: "Error retrieving map with id " + req.body.id
                     });
                 }
             }
