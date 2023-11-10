@@ -36,7 +36,7 @@ Map.findById = (id, result) => {
         }
 
         console.log("map not found : id ", id);
-        result({kind : "not_found"}, null);s
+        result({kind : "not_found"}, null);
     });
 };
 
