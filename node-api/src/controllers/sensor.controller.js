@@ -1,4 +1,3 @@
-//const Map = require("../src/models/map.model");
 import Sensor from "../models/sensor.model.js";
 
 const SensorController = function() {
@@ -14,7 +13,9 @@ SensorController.create = (req, res) => {
 
     const sensor = new Sensor({
         name: req.body.name,
-        TTL: req.body.TTL
+        ttl: req.body.ttl,
+        identifier: req.body.identifier,
+        description: req.body.description
     });
 
     Sensor.create(sensor, (err, data) => {
@@ -46,9 +47,7 @@ SensorController.findOne = (req, res) => {
 };
 
 SensorController.findAll = (req, res) => {
-    const name = req.query.name;
-
-    Sensor.getAll(name, (err, data) => {
+    Sensor.getAll((err, data) => {
         if (err) {
             res.status(500).send({
                 message:
@@ -68,18 +67,18 @@ SensorController.update = (req, res) => {
 
     console.log(req.body);
     Sensor.updateById(
-        req.params.id,
+        req.body.id,
         new Sensor(req.body),
         (err, data) => {
             if (err) {
                 if (err.kind === "not_found") {
                     res.status(404).send({
-                        message: `Not found sensor with id ${req.params.id}.`
+                        message: `Not found sensor with id ${req.body.id}.`
                     });
                 }
                 else {
                     res.status(500).send({
-                        message: "Error retrieving sensor with id " + req.params.id
+                        message: "Error retrieving sensor with id " + req.body.id
                     });
                 }
             }

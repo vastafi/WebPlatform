@@ -35,17 +35,13 @@ Map.findById = (id, result) => {
             return;
         }
 
-        return({kind : "not_found"}, null);
+        console.log("map not found : id ", id);
+        result({kind : "not_found"}, null);s
     });
 };
 
-Map.getAll = (name, result) => {
-    let query = "SELECT * FROM map";
-    if (name) {
-        query += `WHERE name LIKE '%{name}%'`;
-    }
-
-    sql.query(query, (err, res) => {
+Map.getAll = (result) => {
+    sql.query("SELECT * FROM map", (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);

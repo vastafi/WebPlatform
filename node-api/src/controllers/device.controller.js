@@ -13,7 +13,10 @@ DeviceController.create = (req, res) => {
 
     const device = new Device({
         name: req.body.name,
-        num: req.body.num
+        description: req.body.description,
+        identifier: req.body.identifier,
+        image_device: req.body.image_device,
+        image_logo: req.body.image_logo
     });
 
     Device.create(device, (err, data) => {
@@ -45,9 +48,7 @@ DeviceController.findOne = (req, res) => {
 };
 
 DeviceController.findAll = (req, res) => {
-    const name = req.query.name;
-
-    Device.getAll(name, (err, data) => {
+    Device.getAll((err, data) => {
         if (err) {
             res.status(500).send({
                 message:
@@ -67,18 +68,18 @@ DeviceController.update = (req, res) => {
 
     console.log(req.body);
     Device.updateById(
-        req.params.id,
+        req.body.id,
         new Device(req.body),
         (err, data) => {
             if (err) {
                 if (err.kind === "not_found") {
                     res.status(404).send({
-                        message: `Not found device with id ${req.params.id}.`
+                        message: `Not found device with id ${req.body.id}.`
                     });
                 }
                 else {
                     res.status(500).send({
-                        message: "Error retrieving device with id " + req.params.id
+                        message: "Error retrieving device with id " + req.body.id
                     });
                 }
             }

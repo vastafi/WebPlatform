@@ -48,9 +48,7 @@ MapController.findOne = (req, res) => {
 };
 
 MapController.findAll = (req, res) => {
-    const name = req.query.name;
-
-    Map.getAll(name, (err, data) => {
+    Map.getAll((err, data) => {
         if (err) {
             res.status(500).send({
                 message:

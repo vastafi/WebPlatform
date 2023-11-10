@@ -2,8 +2,11 @@
 import sql from "./db.js";
 
 const Device = function(device) {
-    this.name = map.name;
-    this.num = map.num;
+    this.name = device.name;
+    this.description = device.description;
+    this.identifier = device.identifier;
+    this.image_device = device.image_device;
+    this.image_logo = device.image_logo;
 }
 
 Device.create = (newDevice, result) => {
@@ -33,17 +36,13 @@ Device.findById = (id, result) => {
             return;
         }
 
-        return({kind : "not_found"}, null);
+        console.log("device not found : id ", id);
+        result({kind : "not_found"}, null);
     });
 };
 
-Device.getAll = (name, result) => {
-    let query = "SELECT * FROM device";
-    if (name) {
-        query += `WHERE name LIKE '%{name}%'`;
-    }
-
-    sql.query(query, (err, res) => {
+Device.getAll = (result) => {
+    sql.query("SELECT * FROM device", (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -57,8 +56,8 @@ Device.getAll = (name, result) => {
 
 Device.updateById = (id, device, result) => {
     sql.query(
-        "UPDATE device SET name = ?, num = ? WHERE device_id = ?",
-        [device.name, device.num, id],
+        "UPDATE device SET name = ?, description = ?, identifier = ?, image_device = ?, image_logo = ? WHERE device_id = ?",
+        [device.name, device.description, device.identifier, device.image_device, device.image_logo, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);

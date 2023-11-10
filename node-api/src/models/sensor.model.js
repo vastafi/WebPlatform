@@ -2,7 +2,9 @@ import sql from "./db.js";
 
 const Sensor = function(sensor) {
     this.name = sensor.name;
-    this.TTL = sensor.TTL;
+    this.ttl = sensor.ttl;
+    this.identifier = sensor.identifier;
+    this.description = sensor.description;
 }
 
 Sensor.create = (newSensor, result) => {
@@ -32,14 +34,13 @@ Sensor.findById = (id, result) => {
             return;
         }
 
-        return({kind : "not_found"}, null);
+        console.log("sensor not found : id ", id);
+        result({kind : "not_found"}, null);
     });
 };
 
-Sensor.getAll = (name, result) => {
-    let query = "SELECT * FROM sensor";
-
-    sql.query(query, (err, res) => {
+Sensor.getAll = (result) => {
+    sql.query("SELECT * FROM sensor", (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -53,8 +54,8 @@ Sensor.getAll = (name, result) => {
 
 Sensor.updateById = (id, sensor, result) => {
     sql.query(
-        "UPDATE sensor SET name = ?, TTL = ? WHERE sensor_id = ?",
-        [sensor.name, sensor.TTL, id],
+        "UPDATE sensor SET name = ?, ttl = ?, identifier = ?, description = ? WHERE sensor_id = ?",
+        [sensor.name, sensor.ttl, sensor.identifier, sensor.description, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);
