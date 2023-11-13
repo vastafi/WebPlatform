@@ -5,7 +5,8 @@ const Mission = function(mission) {
     this.map_id = mission.map_id;
     this.user_id = mission.user_id;
     this.startDate = mission.startDate;
-    this.TTL = mission.TTL;
+    this.ttl = mission.ttl;
+    this.config = mission.config;
 }
 
 Mission.create = (newMission, result) => {
@@ -35,7 +36,8 @@ Mission.findById = (id, result) => {
             return;
         }
 
-        return({kind : "not_found"}, null);
+        console.log("mission not found : id ", id);
+        result({kind : "not_found"}, null);
     });
 };
 
@@ -56,8 +58,8 @@ Mission.getAll = (result) => {
 
 Mission.updateById = (id, mission, result) => {
     sql.query(
-        "UPDATE mission SET device_id = ?, map_id = ?, user_id = ?, startDate = ?, TTL = ? WHERE mission_id = ?",
-        [mission.device_id, mission.map_id, mission.user_id, mission.startDate, mission.TTL, id],
+        "UPDATE mission SET device_id = ?, map_id = ?, user_id = ?, startDate = ?, ttl = ?, config = ? WHERE mission_id = ?",
+        [mission.device_id, mission.map_id, mission.user_id, mission.startDate, mission.ttl, mission.config, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);

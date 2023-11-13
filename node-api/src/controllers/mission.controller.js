@@ -16,7 +16,8 @@ MissionController.create = (req, res) => {
         map_id: req.body.map_id,
         user_id: req.body.user_id,
         startDate: req.body.startDate,
-        TTL: req.body.TTL
+        ttl: req.body.ttl,
+        config: req.body.config
     });
 
     Mission.create(mission, (err, data) => {
@@ -68,18 +69,18 @@ MissionController.update = (req, res) => {
 
     console.log(req.body);
     Mission.updateById(
-        req.params.id,
+        req.body.id,
         new Mission(req.body),
         (err, data) => {
             if (err) {
                 if (err.kind === "not_found") {
                     res.status(404).send({
-                        message: `Not found mission with id ${req.params.id}.`
+                        message: `Not found mission with id ${req.body.id}.`
                     });
                 }
                 else {
                     res.status(500).send({
-                        message: "Error retrieving mission with id " + req.params.id
+                        message: "Error retrieving mission with id " + req.body.id
                     });
                 }
             }
