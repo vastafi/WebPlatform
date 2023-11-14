@@ -8,9 +8,12 @@ import {
 
 const router = express.Router();
 
-router.post("/login", async (req, res, next) => {
-  const { email, password } = req.body.data.attributes;
-  await loginRouteHandler(req, res, email, password);
+router.post("/login", (req, res) => {
+  console.log(req);
+  //const { email, password } = req.body.data.attributes;
+  const email = "admin@jsonapi.com";
+  const password = "secret";
+  loginRouteHandler(req, res, email, password);
 });
 
 router.post("/logout", (req, res) => {

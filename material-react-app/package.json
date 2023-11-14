@@ -66,5 +66,5 @@
     "prettier": "^3.0.3"
   },
   "homepage": "http://localhost:3000",
-  "proxy": "http://localhost:8080"
+  "proxy": "http://localhost:3000"
 }
