@@ -10,7 +10,7 @@ const dbConfig = {
   HOST: "mysql-utm-platform-db-microlab-agro-platform.a.aivencloud.com",
   USER: "avnadmin",
   PASSWORD: "AVNS_2bInbWIclqi_tBITcbF",
-  DB: "defaultdb",
+  DB: "utm-platform",
   PORT:17613
 };
 export default dbConfig;
