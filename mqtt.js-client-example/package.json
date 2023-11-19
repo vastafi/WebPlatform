@@ -2,9 +2,11 @@
   "name": "mqtt.js-client-example",
   "version": "1.0.0",
   "description": "MQTT.js example repository",
-  "main": "example.js",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": " node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,7 @@
   },
   "homepage": "https://github.com/hivemq-cloud/mqtt.js-client-example#readme",
   "dependencies": {
-    "mqtt": "^4.2.8"
+    "mqtt": "^4.2.8",
+    "mysql2": "^2.3.3"
   }
 }
