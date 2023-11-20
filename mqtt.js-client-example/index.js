@@ -15,6 +15,8 @@
  */
 
 import mqtt from 'mqtt';
+import mysql from "mysql2"
+
 
 // your credentials
 const options = {
@@ -39,17 +41,29 @@ function mqtt_messsageReceived(topic, message, packet) {
   console.log('Received message on topic:', topic); 
   var message_str = message.toString(); //convert byte array to string
   console.log("message to string", message_str);
-  // message_str = message_str.replace(/\n$/, ''); //remove new line
-  // //message_str = message_str.toString().split("|");
-  // console.log("message to params array",message_str);
-  // //payload syntax: clientID,topic,message
-  // if (message_str.length == 0) {
-  //     console.log("Invalid payload");
-  //     } else {    
-  //     insert_message(topic, message_str, packet);
-  //     //console.log(message_arr);
-  // }
+  let table_name = "messages_mqqt";
+  try {
+    insert_message(topic, message, table_name);
+  } catch(e){
+    console.log("Error on sql insert message : ", e.message);
+  }
+  
 };
+
+//insert a row into the db table
+function insert_message(topic, message, table_name) {
+  let jsonMessage = JSON.parse(message); 
+  let sensor_id = jsonMessage.sensor_id;
+  let date= new Date();
+  let sql = "INSERT INTO ?? (??,??,??,??,??) VALUES (?,?,?,?,?)";
+  let params = [table_name, 'message_id', 'sensor_id', 'topic', 'message','date', null, sensor_id, topic, message, date];
+  sql = mysql.format(sql, params);    
+
+  connection.query(sql, function (error, results) {
+      if (error) throw error;
+      console.log("Message added: " , results.insertId);
+  }); 
+};  
 
 
 function mqtt_connected(){
@@ -81,8 +95,13 @@ client.subscribe('agrobot/sensors/#', mqtt_subscribe);
 
 setInterval(function () {
   let tc = Math.floor((Math.random() * 100) + 1);
-  client.publish('agrobot/sensors/temperature/sensor-1', JSON.stringify({'temp': tc}));
+  client.publish('agrobot/sensors/temperature/sensor-1', JSON.stringify({'temp': tc, 'sensor_id':1}));
 }, 30000);
+
+setInterval(function () {
+  let tc = Math.floor((Math.random() * 10) + 1);
+  client.publish('agrobot/sensors/temperature/sensor-2', JSON.stringify({'temp': tc, 'sensor_id':2}));
+}, 60000);
 
 
 //testing
