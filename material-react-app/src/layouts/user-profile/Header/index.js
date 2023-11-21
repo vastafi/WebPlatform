@@ -35,34 +35,34 @@ import burceMars from "assets/images/bruce-mars.jpg";
 import backgroundImage from "assets/images/bg-profile.jpeg";
 
 function Header({ name, children }) {
-  const [tabsOrientation, setTabsOrientation] = useState("horizontal");
-  const [tabValue, setTabValue] = useState(0);
+  // const [tabsOrientation, setTabsOrientation] = useState("horizontal");
+  // const [tabValue, setTabValue] = useState(0);
 
-  useEffect(() => {
-    // A function that sets the orientation state of the tabs.
-    function handleTabsOrientation() {
-      return window.innerWidth < breakpoints.values.sm
-        ? setTabsOrientation("vertical")
-        : setTabsOrientation("horizontal");
-    }
+  // useEffect(() => {
+  //   // A function that sets the orientation state of the tabs.
+  //   function handleTabsOrientation() {
+  //     return window.innerWidth < breakpoints.values.sm
+  //       ? setTabsOrientation("vertical")
+  //       : setTabsOrientation("horizontal");
+  //   }
 
-    /** 
-     The event listener that's calling the handleTabsOrientation function when resizing the window.
-    */
-    window.addEventListener("resize", handleTabsOrientation);
+  //   /** 
+  //    The event listener that's calling the handleTabsOrientation function when resizing the window.
+  //   */
+  //   window.addEventListener("resize", handleTabsOrientation);
 
-    // Call the handleTabsOrientation function to set the state with the initial value.
-    handleTabsOrientation();
+  //   // Call the handleTabsOrientation function to set the state with the initial value.
+  //   handleTabsOrientation();
 
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("resize", handleTabsOrientation);
-  }, [tabsOrientation]);
+  //   // Remove event listener on cleanup
+  //   return () => window.removeEventListener("resize", handleTabsOrientation);
+  // }, [tabsOrientation]);
 
-  const handleSetTabValue = (event, newValue) => setTabValue(newValue);
+  // const handleSetTabValue = (event, newValue) => setTabValue(newValue);
 
   return (
     <MDBox position="relative" mb={5}>
-      <MDBox
+      {/* <MDBox
         display="flex"
         alignItems="center"
         position="relative"
@@ -78,21 +78,22 @@ function Header({ name, children }) {
           backgroundPosition: "50%",
           overflow: "hidden",
         }}
-      />
+      /> */}
       <Card
         sx={{
           position: "relative",
           mt: -8,
-          mx: 3,
-          py: 2,
+          mx: 0,
+          py: 0,
           px: 2,
+
         }}
       >
-        <Grid container spacing={3} alignItems="center">
-          <Grid item>
+        {/* <Grid container spacing={3} alignItems="center"> */}
+          {/* <Grid item>
             <MDAvatar src={burceMars} alt="profile-image" size="xl" shadow="sm" />
-          </Grid>
-          <Grid item>
+          </Grid> */}
+          {/* <Grid item>
             <MDBox height="100%" mt={0.5} lineHeight={1}>
               <MDTypography variant="h5" fontWeight="medium">
                 {name}
@@ -101,8 +102,8 @@ function Header({ name, children }) {
                 CEO / Co-Founder
               </MDTypography>
             </MDBox>
-          </Grid>
-        </Grid>
+          </Grid> */}
+        {/* </Grid> */}
         {children}
       </Card>
     </MDBox>
