@@ -39,6 +39,44 @@ Message.findById = (id, result) => {
     });
 };
 
+Message.findByTopic = (topic, result) => {
+    sql.query(`SELECT * FROM messages_mqqt WHERE topic = '${topic}'`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+
+        if (res.length) {
+            console.log("found messages: ", res);
+            result(null, res);
+            return;
+        }
+
+        console.log("message not found : topic ", topic);
+        result({kind : "not_found"}, null);
+    });
+}
+
+Message.findBySensorId = (id, result) => {
+    sql.query(`SELECT * FROM messages_mqqt WHERE sensor_id = ${id}`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+
+        if (res.length) {
+            console.log("found messages: ", res);
+            result(null, res);
+            return;
+        }
+
+        console.log("message not found : sensor_id ", id);
+        result({kind : "not_found"}, null);
+    });
+};
+
 Message.getAll = (result) => {
     sql.query("SELECT * FROM messages_mqqt", (err, res) => {
         if (err) {

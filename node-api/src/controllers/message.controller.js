@@ -46,6 +46,42 @@ MessageController.findOne = (req, res) => {
     });
 };
 
+MessageController.getByTopic = (req, res) => {
+    Message.findByTopic(req.body.topic, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found messages with topic ${req.body.topic}.`
+                });
+            }
+            else {
+                res.status(500).send({
+                    message: "Error retrieving messages with topic " + req.body.topic
+                });
+            }
+        }
+        else res.send(data);
+    });
+};
+
+MessageController.getBySensorId = (req, res) => {
+    Message.findBySensorId(req.body.sensor_id, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found message with sensor_id ${req.body.sensor_id}.`
+                });
+            }
+            else {
+                res.status(500).send({
+                    message: "Error retrieving message with sensor_id " + req.body.sensor_id
+                });
+            }
+        }
+        else res.send(data);
+    });
+};
+
 MessageController.findAll = (req, res) => {
     Message.getAll((err, data) => {
         if (err) {
