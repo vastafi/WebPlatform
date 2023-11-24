@@ -56,6 +56,7 @@ import ResetPassword from "auth/reset-password";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import Users from "layouts/users";
 
 const routes = [
   {
@@ -129,6 +130,14 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/Maps",
     component: <Maps />,
+  },
+  {
+    type: "collapse",
+    name: "Users",
+    key: "Users",
+    icon: <Icon fontSize="small">dashboard</Icon>,
+    route: "/Users",
+    component: <Users />,
   },
   // {
   //   type: "examples",

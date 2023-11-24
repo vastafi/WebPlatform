@@ -30,10 +30,9 @@ import DataTable from "examples/Tables/DataTable";
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
+import { StyledButton } from "layouts/maps/styles";
 
-function Tables({rowsData}) {
-  const { columns, rows } = authorsTableData();
-  const { columns: pColumns } = projectsTableData();
+function Tables({rowsData, columns, func, name}) {
 
   return (
     <DashboardLayout>
@@ -54,18 +53,19 @@ function Tables({rowsData}) {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Maps
+                  {name.name}
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
-                  table={{ columns: pColumns, rows: rowsData }}
+                  table={{ columns: columns, rows: rowsData }}
                   isSorted={false}
                   entriesPerPage={false}
                   showTotalEntries={false}
                   noEndBorder
                 />
               </MDBox>
+              <StyledButton onClick={() => func(true)} >{name.nameBtn}</StyledButton>
             </Card>
           </Grid>
         </Grid>

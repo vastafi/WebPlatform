@@ -1,32 +1,27 @@
 import { useEffect, useState, useReducer } from "react";
 import axios from "axios";
-import { styled } from "@mui/material/styles";
 import MDBox from "components/MDBox";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Footer from "examples/Footer";
 
 import map from "../../assets/images/map.png"
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-// import Footer from "examples/Footer";
-import { Typography, TableContainer, Table, Tab, TableHead, TableCell, TableBody, TableRow } from "@mui/material";
-import MDButton from "components/MDButton";
 import MDTypography from "components/MDTypography";
-import TextField from "@mui/material/TextField";
-import { FormInput, FormMap, StyledButton, StyledTableRow } from "./styles";
-import UpdateMap from "./UpdateMap";
 import Tables from "layouts/tables";
 import Icon from "@mui/material/Icon";
 import MDAvatar from "components/MDAvatar";
 import Button from '@mui/material/Button';
 import Box from "@mui/material/Box";
-import { Form } from "react-router-dom";
 import UserProfile from "layouts/user-profile";
+import CreateMap from "./CreateMap";
+import UpdateMap from "./UpdateMap";
 
 
 const Maps = () => {
 
   const [maps, setMaps] = useState([])
   const [edit, setEdit] = useState({ state: false, id: null })
+  const [toggleForm, setToggleForm] = useState(false)
   const [update, forceUpdate] = useReducer(x => x + 1, 0);
   const [newMap, setNewMap] = useState({
     zoom: "",
@@ -37,10 +32,9 @@ const Maps = () => {
 
   useEffect(() => {
     getMaps();
-  }, []);
+  }, [update]);
 
 
-  const [toggleForm, setToggleForm] = useState(false)
   const deleteMap = (id) => {
     axios.delete(`http://localhost:3001/api/maps/${id}`);
     forceUpdate()
@@ -71,7 +65,7 @@ const Maps = () => {
     </MDBox>
   );
 
-  const something = maps.map((item => {
+  const rows = maps.map((item => {
     return {
       project: <Project image={map} name={item.name} />,
       budget: (
@@ -89,25 +83,14 @@ const Maps = () => {
         </MDTypography>
       ),
     }
-
   }))
 
-
-
-  const renderMaps = maps.map((item) => {
-
-    let datePart = item.date.substring(0, 10)
-    let timePart = item.date.substring(11, 19)
-    let formattedDateTime = datePart + " " + timePart
-
-    return (
-      <StyledTableRow hover key={crypto.randomUUID()} onClick={() => setEdit({ state: true, id: item.map_id })}>
-        <TableCell>{item.name}</TableCell>
-        <TableCell>{formattedDateTime}</TableCell>
-        <TableCell><DeleteIcon sx={{ fontSize: 40, cursor: "pointer" }} onClick={() => deleteMap(item.map_id)} /></TableCell>
-      </StyledTableRow>
-    )
-  })
+  const columns = [
+    { Header: "Name", accessor: "project", width: "30%", align: "left" },
+    { Header: "Date", accessor: "budget", align: "left" },
+    { Header: "Edit", accessor: "status", align: "center" },
+    { Header: "Delete", accessor: "completion", align: "center" },
+  ]
 
   async function getMaps() {
     try {
@@ -143,7 +126,6 @@ const Maps = () => {
 
 
 
-    console.log(newMap)
     const d = new Date();
     const month = d.getMonth()
     const year = d.getFullYear()
@@ -169,106 +151,16 @@ const Maps = () => {
   };
 
 
-
-
-
   return (
     <Box sx={{position: "relative", height: "100vh"}}>
       <DashboardLayout>
         <MDBox mb={2} />
-        <Tables maps={maps} rowsData={something} />
-
-        {
-          toggleForm && (
-            <FormMap
-              component="form"
-              role="form"
-              onSubmit={submitHandler}
-              display="flex"
-              gap="40px"
-              flexDirection="column"
-            >
-              <MDBox>
-                <FormInput
-                  type="name"
-                  fullWidth
-                  value={newMap.name}
-                  name="name"
-                  placeholder="New map name"
-                  onChange={changeHandler}
-                />
-
-                {errors.name && (
-                  <Typography variant="caption" color="error" fontWeight="light">
-                    Map name is required!!!
-                  </Typography>
-                )}
-              </MDBox>
-
-              <MDBox>
-                <FormInput
-                  type="number"
-                  fullWidth
-                  value={newMap.zoom}
-                  name="zoom"
-                  placeholder="zoom"
-                  onChange={changeHandler}
-                />
-                {errors.zoom && (
-                  <Typography variant="caption" color="error" fontWeight="light">
-                    zoom is required
-                  </Typography>
-                )}
-              </MDBox>
-
-              <MDBox>
-                <FormInput
-                  type="number"
-                  fullWidth
-                  value={newMap.centerLat}
-                  name="centerLat"
-                  placeholder="CenterLat"
-                  onChange={changeHandler}
-                />
-                {errors.centerLat && (
-                  <Typography variant="caption" color="error" fontWeight="light">
-                    centerLat is required
-                  </Typography>
-                )}
-              </MDBox>
-
-              <MDBox>
-                <FormInput
-                  type="number"
-                  fullWidth
-                  value={newMap.centerLng}
-                  name="centerLng"
-                  placeholder="CenterLng"
-                  onChange={changeHandler}
-                />
-                {errors.centerLng && (
-                  <Typography variant="caption" color="error" fontWeight="light">
-                    CenterLng is required
-                  </Typography>
-                )}
-              </MDBox>
-
-              <StyledButton variant="contained"
-                type="submit">
-                Save Map
-              </StyledButton>
-            </FormMap>
-          )
-        }
+        <Tables rowsData={rows} name={{name: "Maps", nameBtn: "New Map"}} columns={columns} func={setToggleForm}/>
+        {toggleForm && <CreateMap setState={setToggleForm} forceUpdate={forceUpdate}/>}
         <Footer />
       </DashboardLayout>
-      {
-          edit.state === true && (
-            <UserProfile id={edit.id} setState={setEdit} forceUpdate={forceUpdate} />
-          )
-        }
+      {edit.state === true && <UpdateMap id={edit.id} getMaps={getMaps} setState={setEdit} forceUpdate={forceUpdate} />}
     </Box>
-
   );
 };
 
