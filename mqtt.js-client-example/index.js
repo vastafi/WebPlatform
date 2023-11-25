@@ -96,12 +96,12 @@ client.subscribe('agrobot/sensors/#', mqtt_subscribe);
 setInterval(function () {
   let tc = Math.floor((Math.random() * 100) + 1);
   client.publish('agrobot/sensors/temperature/sensor-1', JSON.stringify({'temp': tc, 'sensor_id':1}));
-}, 30000);
+}, 6000);
 
-setInterval(function () {
-  let tc = Math.floor((Math.random() * 10) + 1);
-  client.publish('agrobot/sensors/temperature/sensor-2', JSON.stringify({'temp': tc, 'sensor_id':2}));
-}, 60000);
+// setInterval(function () {
+//   let tc = Math.floor((Math.random() * 10) + 1);
+//   client.publish('agrobot/sensors/temperature/sensor-2', JSON.stringify({'temp': tc, 'sensor_id':2}));
+// }, 60000);
 
 
 //testing
