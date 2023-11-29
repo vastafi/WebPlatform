@@ -10,7 +10,7 @@ import Header from "layouts/user-profile/Header";
 import { Box } from "@mui/material";
 import { StyledButton } from "./styles";
 
-const CreateMap = ({id, setState, forceUpdate}) => {
+const CreateMap = () => {
     const [newMap, setNewMap] = useState({
         zoom: "",
         centerLat: "",
@@ -47,9 +47,6 @@ const CreateMap = ({id, setState, forceUpdate}) => {
         } catch (error) {
           console.error(error);
         }
-
-        setState(false)
-        forceUpdate()
   }
 
 

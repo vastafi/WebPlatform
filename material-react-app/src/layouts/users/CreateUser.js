@@ -6,6 +6,7 @@ import MDInput from "components/MDInput";
 
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import Header from "layouts/user-profile/Header";
+import Button from "@mui/material/Button";
 
 import { Box } from "@mui/material";
 import { StyledButton } from "./styles";
@@ -40,8 +41,6 @@ const CreateUser = ({ setState, forceUpdate}) => {
         } catch (error) {
           console.error(error);
         }
-        setState(false)
-        forceUpdate()
   }
 
 
@@ -200,9 +199,9 @@ const CreateUser = ({ setState, forceUpdate}) => {
 
               </MDBox>
               <MDBox mt={4} display="flex" justifyContent="end">
-                <StyledButton variant="gradient" color="info" type="submit">
-                  Create User
-                </StyledButton>
+              <Button variant="contained" style={{color: "white"}} type="submit">
+                Create User
+                </Button>
               </MDBox>
             </MDBox>
           </MDBox>

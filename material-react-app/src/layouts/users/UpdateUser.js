@@ -7,10 +7,11 @@ import MDInput from "components/MDInput";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import Header from "layouts/user-profile/Header";
 
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { StyledButton } from "./styles";
+import { useLocation, useParams } from "react-router-dom";
 
-const UpdateUser = ({id, setState, forceUpdate}) => {
+const UpdateUser = ({ setState, forceUpdate}) => {
     const [user, setUser] = useState({
         name: "",
         phone: "",
@@ -18,6 +19,9 @@ const UpdateUser = ({id, setState, forceUpdate}) => {
         role: "",
         description: "",
       });
+
+
+  const id = useParams()
   const [errors, setErrors] = useState({
     nameError: false,
     emailError: false,
@@ -28,7 +32,7 @@ const UpdateUser = ({id, setState, forceUpdate}) => {
 
   async function getUser() {
     try {
-      const response = await axios.get(`http://localhost:3001/api/users/${id}`);
+      const response = await axios.get(`http://localhost:3001/api/users/${id.id}`);
       setUser(response.data)
     } catch (error) {
       console.error(error);
@@ -49,12 +53,10 @@ const UpdateUser = ({id, setState, forceUpdate}) => {
   const submitHandler = (e) => {
       e.preventDefault()
       try {
-          axios.put('http://localhost:3001/api/users/', {...user, id:id});
+          axios.put('http://localhost:3001/api/users/', {...user, id:id.id});
         } catch (error) {
           console.error(error);
         }
-        setState(false)
-        forceUpdate()
   }
 
 
@@ -213,9 +215,9 @@ const UpdateUser = ({id, setState, forceUpdate}) => {
 
               </MDBox>
               <MDBox mt={4} display="flex" justifyContent="end">
-                <StyledButton variant="gradient" color="info" type="submit">
-                  Create User
-                </StyledButton>
+                <Button variant="contained" style={{color: "white"}} type="submit">
+                UpdateUser
+                </Button>
               </MDBox>
             </MDBox>
           </MDBox>

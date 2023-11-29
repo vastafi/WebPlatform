@@ -57,6 +57,7 @@ import ResetPassword from "auth/reset-password";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import Users from "layouts/users";
+import CreateMap from "layouts/maps/CreateMap";
 
 const routes = [
   {
@@ -128,7 +129,7 @@ const routes = [
     name: "Maps",
     key: "Maps",
     icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/Maps",
+    route: "/Maps/*",
     component: <Maps />,
   },
   {

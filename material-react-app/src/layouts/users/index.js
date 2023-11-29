@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 import Box from "@mui/material/Box";
 import CreateUser from "./CreateUser";
 import UpdateUser from "./UpdateUser";
+import { Link } from "react-router-dom";
 
 
 const Users = () => {
@@ -69,7 +70,9 @@ const Users = () => {
         {item.description}
       </MDTypography>
       ),
-      edit: <Button sx={{ color: "#7b809a", "&:hover": { color: "#7b809a" }, }} onClick={() => setEdit({ state: true, id: item.user_id })}>Edit</Button>,
+      edit: <Link to={`/UpdateUser/${item.user_id}`}> <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
+      Edit
+    </MDTypography></Link>,
       delete: <Box onClick={() => deleteUser(item.user_id)}><DeleteIcon fontSize="medium" sx={{ cursor: "pointer" }} /></Box>
     }
   }))
@@ -99,11 +102,9 @@ const Users = () => {
     <Box sx={{position: "relative", height: "100vh"}}>
       <DashboardLayout>
         <MDBox mb={2} />
-        <Tables rowsData={rows} name={{name: "Users", nameBtn: "New Map"}} columns={columns} func={setToggleForm}/>
+        <Tables rowsData={rows} name={{name: "Users", nameBtn: "New User", route: "/CreateUser"}} columns={columns} func={setToggleForm}/>
         {toggleForm && <CreateUser setState={setToggleForm} forceUpdate={forceUpdate}/>}
-        <Footer />
-      </DashboardLayout>
-      {edit.state === true && <UpdateUser id={edit.id} getMaps={getUsers} setState={setEdit} forceUpdate={forceUpdate} />}
+        </DashboardLayout>
     </Box>
   );
 };

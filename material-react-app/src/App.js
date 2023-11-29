@@ -48,6 +48,12 @@ import { AuthContext } from "context";
 import UserProfile from "layouts/user-profile";
 import UserManagement from "layouts/user-management";
 import { Helmet } from "react-helmet";
+import Maps from "layouts/maps";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import Dashboard from "layouts/dashboard";
+import CreateMap from "layouts/maps/CreateMap";
+import UpdateUser from "layouts/users/UpdateUser";
+import CreateUser from "layouts/users/CreateUser";
 
 export default function App() {
   const authContext = useContext(AuthContext);
@@ -131,11 +137,7 @@ export default function App() {
           <Route
             exact
             path={route.route}
-            element={
-              <ProtectedRoute isAuthenticated={authContext.isAuthenticated}>
-                {route.component}
-              </ProtectedRoute>
-            }
+            element={route.component}
             key={route.key}
           />
         );
@@ -169,7 +171,7 @@ export default function App() {
 
   return (
     <>
-      {isDemo && (
+      {/* {isDemo && (
         <Helmet>
           <meta
             name="keywords"
@@ -226,8 +228,8 @@ export default function App() {
           />
           <meta property="og:site_name" content="Creative Tim" />
         </Helmet>
-      )}
-      {direction === "rtl" ? (
+      )} */}
+      {/* {direction === "rtl" ? (
         <CacheProvider value={rtlCache}>
           <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
             <CssBaseline />
@@ -255,10 +257,9 @@ export default function App() {
             </Routes>
           </ThemeProvider>
         </CacheProvider>
-      ) : (
+      ) : ( */}
         <ThemeProvider theme={darkMode ? themeDark : theme}>
           <CssBaseline />
-          {layout === "dashboard" && (
             <>
               <Sidenav
                 color={sidenavColor}
@@ -271,38 +272,22 @@ export default function App() {
               <Configurator />
               {configsButton}
             </>
-          )}
-          {layout === "vr" && <Configurator />}
+
+          {/* {layout === "vr" && <Configurator />} */}
           <Routes>
-            <Route path="/auth/login" element={<Login />} />
+            <Route path="/" element={<Dashboard/>}/>
+            <Route path="/CreateMap" element={<CreateMap/>}/>
+            <Route path="/CreateUser" element={<CreateUser/>}/>
+            <Route path="/UpdateUser/:id" element={<UpdateUser/>}/>
+            {/* <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/register" element={<Register />} />
             <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-            <Route path="/auth/reset-password" element={<ResetPassword />} />
-            <Route
-              exact
-              path="user-profile"
-              element={
-                <ProtectedRoute isAuthenticated={authContext.isAuthenticated}>
-                  <UserProfile />
-                </ProtectedRoute>
-              }
-              key="user-profile"
-            />
-            <Route
-              exact
-              path="user-management"
-              element={
-                <ProtectedRoute isAuthenticated={authContext.isAuthenticated}>
-                  <UserManagement />
-                </ProtectedRoute>
-              }
-              key="user-management"
-            />
+            <Route path="/auth/reset-password" element={<ResetPassword />} /> */}
+
             {getRoutes(routes)}
-            <Route path="*" element={<Navigate to="/dashboard" />} />
+            {/* <Route path="/" element={<Navigate to="/dashboard" />} /> */}
           </Routes>
         </ThemeProvider>
-      )}
     </>
   );
 }

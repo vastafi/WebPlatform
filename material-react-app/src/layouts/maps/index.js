@@ -12,9 +12,9 @@ import Icon from "@mui/material/Icon";
 import MDAvatar from "components/MDAvatar";
 import Button from '@mui/material/Button';
 import Box from "@mui/material/Box";
-import UserProfile from "layouts/user-profile";
 import CreateMap from "./CreateMap";
 import UpdateMap from "./UpdateMap";
+import { Link, Route, Routes } from "react-router-dom";
 
 
 const Maps = () => {
@@ -23,12 +23,6 @@ const Maps = () => {
   const [edit, setEdit] = useState({ state: false, id: null })
   const [toggleForm, setToggleForm] = useState(false)
   const [update, forceUpdate] = useReducer(x => x + 1, 0);
-  const [newMap, setNewMap] = useState({
-    zoom: "",
-    centerLat: "",
-    centerLng: "",
-    name: "",
-  });
 
   useEffect(() => {
     getMaps();
@@ -39,22 +33,6 @@ const Maps = () => {
     axios.delete(`http://localhost:3001/api/maps/${id}`);
     forceUpdate()
   }
-
-  const [errors, setErrors] = useState({
-    zoom: false,
-    centerLat: false,
-    centerLng: false,
-    centnameerLng: false,
-  });
-
-
-
-  const changeHandler = (e) => {
-    setNewMap({
-      ...newMap,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   const Project = ({ image, name }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
@@ -99,65 +77,14 @@ const Maps = () => {
     } catch (error) {
       console.error(error);
     }
+
   }
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-
-    if (newMap.name.trim().length === 0) {
-      setErrors({ ...errors, name: true });
-      return;
-    }
-
-    if (newMap.zoom.trim().length === 0) {
-      setErrors({ ...errors, zoom: true });
-      return;
-    }
-
-    if (newMap.centerLat.trim().length === 0) {
-      setErrors({ ...errors, centerLat: true });
-      return;
-    }
-
-    if (newMap.centerLng.trim().length === 0) {
-      setErrors({ ...errors, centerLng: true });
-      return;
-    }
-
-
-
-    const d = new Date();
-    const month = d.getMonth()
-    const year = d.getFullYear()
-    const date = d.getDate()
-    const newDate = `${year}/${month}/${date}`
-    try {
-      axios.post('http://localhost:3001/api/maps/', { ...newMap, date: newDate });
-    } catch (error) {
-      console.error(error);
-    }
-    setErrors({
-      nameError: false,
-      emailError: false,
-      passwordError: false,
-      newPassError: false,
-      confirmPassError: false,
-    });
-
-    setToggleForm(!toggleForm)
-    getMaps();
-    forceUpdate()
-
-  };
-
-
   return (
-    <Box sx={{position: "relative", height: "100vh"}}>
+    <Box sx={{ position: "relative", height: "100vh" }}>
       <DashboardLayout>
+          <Tables rowsData={rows} name={{ name: "Maps", nameBtn: "New Map", route: "/CreateMap" }} columns={columns} func={setToggleForm} />
         <MDBox mb={2} />
-        <Tables rowsData={rows} name={{name: "Maps", nameBtn: "New Map"}} columns={columns} func={setToggleForm}/>
-        {toggleForm && <CreateMap setState={setToggleForm} forceUpdate={forceUpdate}/>}
-        <Footer />
       </DashboardLayout>
       {edit.state === true && <UpdateMap id={edit.id} getMaps={getMaps} setState={setEdit} forceUpdate={forceUpdate} />}
     </Box>
