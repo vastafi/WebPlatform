@@ -57,7 +57,11 @@ import ResetPassword from "auth/reset-password";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import Users from "layouts/users";
+<<<<<<< HEAD
 import CreateMap from "layouts/maps/CreateMap";
+=======
+import ExampleProject1 from "layouts/exampleProject1";
+>>>>>>> abf161a632a4343f55f211ed007acdf4549adba4
 
 const routes = [
   {
@@ -140,6 +144,23 @@ const routes = [
     route: "/Users",
     component: <Users />,
   },
+  {
+    type: "divider",
+  },
+
+  {
+    type: "title",
+    title: "Projects",
+  },
+  {
+    type: "collapse",
+    name: "ExampleProject1",
+    key: "ExampleProject1",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/ExampleProject1",
+    component: <ExampleProject1 />,
+  },
+
   // {
   //   type: "examples",
   //   name: "User Management",

@@ -7,6 +7,6 @@ import deviceRoutes from './device'
 import coordinateRoutes from './coordinate'
 import missionRoutes from './mission'
 import deviceSensorRoutes from './deviceAndSensor';
+import messageRoutes from './message';
 
-
-export {userRoutes, meRoutes, authRoutes, mapRoutes, sensorRoutes, deviceRoutes, coordinateRoutes, missionRoutes, deviceSensorRoutes};
+export {userRoutes, meRoutes, authRoutes, mapRoutes, sensorRoutes, deviceRoutes, coordinateRoutes, missionRoutes, deviceSensorRoutes, messageRoutes};
