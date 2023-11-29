@@ -26,7 +26,7 @@ const options = {
 };
 
 // connect to your cluster
-const client = mqtt.connect(options);
+let client = mqtt.connect(options);
 
 // prints a received message
 client.on('message', function(topic, message) {

@@ -57,6 +57,7 @@ import ResetPassword from "auth/reset-password";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import Users from "layouts/users";
+import ExampleProject1 from "layouts/exampleProject1";
 
 const routes = [
   {
@@ -139,6 +140,23 @@ const routes = [
     route: "/Users",
     component: <Users />,
   },
+  {
+    type: "divider",
+  },
+
+  {
+    type: "title",
+    title: "Projects",
+  },
+  {
+    type: "collapse",
+    name: "ExampleProject1",
+    key: "ExampleProject1",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/ExampleProject1",
+    component: <ExampleProject1 />,
+  },
+
   // {
   //   type: "examples",
   //   name: "User Management",
