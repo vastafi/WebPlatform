@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useMemo, useEffect, useState } from "react";
 
 // prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
+import PropTypes, { any } from "prop-types";
 
 // react-table components
 import { useTable, usePagination, useGlobalFilter, useAsyncDebounce, useSortBy } from "react-table";
@@ -54,7 +54,6 @@ function DataTable({
     : ["5", "10", "15", "20", "25"];
   const columns = useMemo(() => table.columns, [table]);
   const data = useMemo(() => table.rows, [table]);
-
   const tableInstance = useTable(
     { columns, data, initialState: { pageIndex: 0 } },
     useGlobalFilter,
@@ -286,6 +285,7 @@ DataTable.propTypes = {
     }),
     PropTypes.bool,
   ]),
+  rowsData: PropTypes.arrayOf(PropTypes.array),
   canSearch: PropTypes.bool,
   showTotalEntries: PropTypes.bool,
   table: PropTypes.objectOf(PropTypes.array).isRequired,

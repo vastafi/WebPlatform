@@ -28,7 +28,7 @@ const options = {
 };
 
 // connect to your cluster
-const client = mqtt.connect(options);
+let client = mqtt.connect(options);
 
 client.on('connect', mqtt_connected);
 client.on('reconnect', mqtt_reconnect);

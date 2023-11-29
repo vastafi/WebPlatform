@@ -8,45 +8,38 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import Header from "layouts/user-profile/Header";
 
 import { Box } from "@mui/material";
+import { StyledButton } from "./styles";
 
-const UserProfile = ({id, setState, forceUpdate}) => {
-    const [newMap, setNewMap] = useState({
-        zoom: "",
-        centerLat: "",
-        centerLng: "",
+const CreateUser = ({ setState, forceUpdate}) => {
+    const [newUser, setNewUser] = useState({
         name: "",
+        phone: "",
+        email: "",
+        role: "",
+        description: "",
       });
   const [errors, setErrors] = useState({
     nameError: false,
     emailError: false,
-    newPassError: false,
-    confirmPassError: false,
+    phoneError: false,
+    roleError: false,
+    descriptionError: false,
   });
 
-  const [map, setMap] = useState({})
-
-
     const changeHandler = (e) => {
-      setNewMap({
-        ...newMap,
+      setNewUser({
+        ...newUser,
         [e.target.name]: e.target.value,
       });
     };
 
   const submitHandler = (e) => {
       e.preventDefault()
-      const d = new Date();
-      const month = d.getMonth()
-      const year = d.getFullYear()
-      const date = d.getDate()
-      const newDate = `${year}/${month}/${date}`
       try {
-        console.log("it's ok");
-          axios.post('http://localhost:3001/api/maps/', {...newMap, date: newDate,});
+          axios.post('http://localhost:3001/api/users/', {...newUser});
         } catch (error) {
           console.error(error);
         }
-
         setState(false)
         forceUpdate()
   }
@@ -79,7 +72,7 @@ const UserProfile = ({id, setState, forceUpdate}) => {
                     type="name"
                     fullWidth
                     name="name"
-                    value={newMap.name}
+                    value={newUser.name}
                     placeholder="name"
                     onChange={changeHandler}
                   />
@@ -99,21 +92,21 @@ const UserProfile = ({id, setState, forceUpdate}) => {
                 ml={2}
               >
                 <MDTypography variant="body2" color="text" ml={1} fontWeight="regular">
-                  zoom
+                  Phone
                 </MDTypography>
                 <MDBox mb={1} width="100%">
                   <MDInput
                     type="number"
                     fullWidth
-                    name="zoom"
-                    placeholder="zoom"
-                    value={newMap.zoom}
+                    name="phone"
+                    placeholder="phone"
+                    value={newUser.phone}
                     onChange={changeHandler}
-                    error={errors.emailError}
+                    error={errors.phoneError}
                   />
-                  {errors.emailError && (
+                  {errors.phoneError && (
                     <MDTypography variant="caption" color="error" fontWeight="light">
-                      The zoom must be valid
+                      The phone must be valid
                     </MDTypography>
                   )}
                 </MDBox>
@@ -130,20 +123,20 @@ const UserProfile = ({id, setState, forceUpdate}) => {
                   mr={2}
                 >
                   <MDTypography variant="body2" color="text" ml={1} fontWeight="regular">
-                    centerLat
+                  Email
                   </MDTypography>
                   <MDBox mb={2} width="100%">
                     <MDInput
-                      type="number"
+                      type="text"
                       fullWidth
-                      name="centerLat"
-                      placeholder="centerLat"
-                      value={newMap.centerLat}
+                      name="email"
+                      placeholder="email"
+                      value={newUser.email}
                       onChange={changeHandler}
                     />
-                    {errors.newPassError && (
+                    {errors.emailError && (
                       <MDTypography variant="caption" color="error" fontWeight="light">
-                        The centerLat must be valid
+                        The email must be valid
                       </MDTypography>
                     )}
                   </MDBox>
@@ -156,28 +149,59 @@ const UserProfile = ({id, setState, forceUpdate}) => {
                   ml={2}
                 >
                   <MDTypography variant="body2" color="text" ml={1} fontWeight="regular">
-                    centerLng
+                    Role
                   </MDTypography>
                   <MDBox mb={1} width="100%">
                     <MDInput
-                      type="number"
+                      type="text"
                       fullWidth
-                      name="centerLng"
-                      placeholder="centerLng"
-                      value={newMap.centerLng}
+                      name="role"
+                      placeholder="role"
+                      value={newUser.role}
                       onChange={changeHandler}
                     />
-                    {errors.confirmPassError && (
+                    {errors.roleError && (
                       <MDTypography variant="caption" color="error" fontWeight="light">
-                        The centerLng must be valid
+                        The role must be valid
                       </MDTypography>
                     )}
                   </MDBox>
                 </MDBox>
               </MDBox>
+            </MDBox>
+            <MDBox display="flex" flexDirection="column" mb={3}>
+              <MDBox display="flex" flexDirection="row">
+                <MDBox
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="flex-start"
+                  width="100%"
+                  mr={2}
+                >
+                  <MDTypography variant="body2" color="text" ml={1} fontWeight="regular">
+                    Description
+                  </MDTypography>
+                  <MDBox mb={2} width="100%">
+                    <MDInput
+                      type="text"
+                      fullWidth
+                      name="description"
+                      placeholder="description"
+                      value={newUser.description}
+                      onChange={changeHandler}
+                    />
+                    {errors.descriptionError && (
+                      <MDTypography variant="caption" color="error" fontWeight="light">
+                        The description must be valid
+                      </MDTypography>
+                    )}
+                  </MDBox>
+                </MDBox>
+
+              </MDBox>
               <MDBox mt={4} display="flex" justifyContent="end">
                 <StyledButton variant="gradient" color="info" type="submit">
-                  Create Map
+                  Create User
                 </StyledButton>
               </MDBox>
             </MDBox>
@@ -189,4 +213,4 @@ const UserProfile = ({id, setState, forceUpdate}) => {
   );
 };
 
-export default UserProfile;
+export default CreateUser;

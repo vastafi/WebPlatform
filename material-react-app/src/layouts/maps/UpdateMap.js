@@ -8,8 +8,9 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import Header from "layouts/user-profile/Header";
 
 import { Box } from "@mui/material";
+import { StyledButton } from "./styles";
 
-const UserProfile = ({id, setState, forceUpdate}) => {
+const CreateMap = ({id, setState, forceUpdate}) => {
     const [newMap, setNewMap] = useState({
         zoom: "",
         centerLat: "",
@@ -189,4 +190,4 @@ const UserProfile = ({id, setState, forceUpdate}) => {
   );
 };
 
-export default UserProfile;
+export default CreateMap;
