@@ -57,11 +57,8 @@ import ResetPassword from "auth/reset-password";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import Users from "layouts/users";
-<<<<<<< HEAD
 import CreateMap from "layouts/maps/CreateMap";
-=======
-import ExampleProject1 from "layouts/exampleProject1";
->>>>>>> abf161a632a4343f55f211ed007acdf4549adba4
+import ExampleProject1 from "layouts/exampleProject1"
 
 const routes = [
   {

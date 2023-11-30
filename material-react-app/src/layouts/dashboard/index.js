@@ -39,7 +39,7 @@ function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
 
   return (
-    <DashboardLayout>
+    <DashboardLayout marginLeft={274}>
       <DashboardNavbar />
       <MDBox py={3}>
         <Grid container spacing={3}>

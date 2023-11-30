@@ -8,8 +8,8 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import Header from "layouts/user-profile/Header";
 
 import { Box, Button } from "@mui/material";
-import { StyledButton } from "./styles";
-import { useLocation, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const UpdateUser = ({ setState, forceUpdate}) => {
     const [user, setUser] = useState({
@@ -58,6 +58,12 @@ const UpdateUser = ({ setState, forceUpdate}) => {
           console.error(error);
         }
   }
+
+  const navigate = useNavigate()
+
+  const goBackHandler = () => {
+    navigate(-1)
+  };
 
 
   return (
@@ -215,8 +221,8 @@ const UpdateUser = ({ setState, forceUpdate}) => {
 
               </MDBox>
               <MDBox mt={4} display="flex" justifyContent="end">
-                <Button variant="contained" style={{color: "white"}} type="submit">
-                UpdateUser
+                <Button onClick={()=> goBackHandler()} variant="contained" style={{color: "white"}} type="submit">
+                Update User
                 </Button>
               </MDBox>
             </MDBox>

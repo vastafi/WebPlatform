@@ -17,15 +17,12 @@ import Configurator from "examples/Configurator";
 
 // Material Dashboard 2 React themes
 import theme from "assets/theme";
-import themeRTL from "assets/theme/theme-rtl";
 
 // Material Dashboard 2 React Dark Mode themes
 import themeDark from "assets/theme-dark";
-import themeDarkRTL from "assets/theme-dark/theme-rtl";
 
 // RTL plugins
 import rtlPlugin from "stylis-plugin-rtl";
-import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 
 // Material Dashboard 2 React routes
@@ -39,17 +36,7 @@ import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
 import { setupAxiosInterceptors } from "./services/interceptor";
-import ProtectedRoute from "examples/ProtectedRoute";
-import ForgotPassword from "auth/forgot-password";
-import ResetPassword from "auth/reset-password";
-import Login from "auth/login";
-import Register from "auth/register";
 import { AuthContext } from "context";
-import UserProfile from "layouts/user-profile";
-import UserManagement from "layouts/user-management";
-import { Helmet } from "react-helmet";
-import Maps from "layouts/maps";
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import Dashboard from "layouts/dashboard";
 import CreateMap from "layouts/maps/CreateMap";
 import UpdateUser from "layouts/users/UpdateUser";
@@ -171,93 +158,6 @@ export default function App() {
 
   return (
     <>
-      {/* {isDemo && (
-        <Helmet>
-          <meta
-            name="keywords"
-            content="creative tim, updivision, material, node.js json:api, html dashboard, node.js, react, api admin, react node.js, html css dashboard node.js, material dashboard node.js, node.js api, react material dashboard, material admin, react dashboard, react admin, web dashboard, bootstrap 5 dashboard node.js, bootstrap 5, css3 dashboard, bootstrap 5 admin node.js, material dashboard bootstrap 5 node.js, frontend, api dashboard, responsive bootstrap 5 dashboard, api, material dashboard, material node.js bootstrap 5 dashboard, json:api"
-          />
-          <meta
-            name="description"
-            content="A free full stack app powered by MUI component library, React and Node.js API, featuring dozens of handcrafted UI elements"
-          />
-          <meta
-            itemProp="name"
-            content="Material Dashboard 2 React Node.js by Creative Tim & UPDIVISION"
-          />
-          <meta
-            itemProp="description"
-            content="A free full stack app powered by MUI component library, React and Node.js API, featuring dozens of handcrafted UI elements"
-          />
-          <meta
-            itemProp="image"
-            content="https://s3.amazonaws.com/creativetim_bucket/products/157/original/react-material-dashboard-nodejs.jpg?1664786816"
-          />
-          <meta name="twitter:card" content="product" />
-          <meta name="twitter:site" content="@creativetim" />
-          <meta
-            name="twitter:title"
-            content="Material Dashboard 2 React Node.js by Creative Tim & UPDIVISION"
-          />
-          <meta
-            name="twitter:description"
-            content="A free full stack app powered by MUI component library, React and Node.js API, featuring dozens of handcrafted UI elements"
-          />
-          <meta name="twitter:creator" content="@creativetim" />
-          <meta
-            name="twitter:image"
-            content="https://s3.amazonaws.com/creativetim_bucket/products/157/original/react-material-dashboard-nodejs.jpg?1664786816"
-          />
-          <meta property="fb:app_id" content="655968634437471" />
-          <meta
-            property="og:title"
-            content="Material Dashboard 2 React Node.js by Creative Tim & UPDIVISION"
-          />
-          <meta property="og:type" content="article" />
-          <meta
-            property="og:url"
-            content="https://www.creative-tim.com/live/react-material-dashboard-node.js/"
-          />
-          <meta
-            property="og:image"
-            content="https://s3.amazonaws.com/creativetim_bucket/products/157/original/react-material-dashboard-nodejs.jpg?1664786816"
-          />
-          <meta
-            property="og:description"
-            content="A free full stack app powered by MUI component library, React and Node.js API, featuring dozens of handcrafted UI elements"
-          />
-          <meta property="og:site_name" content="Creative Tim" />
-        </Helmet>
-      )} */}
-      {/* {direction === "rtl" ? (
-        <CacheProvider value={rtlCache}>
-          <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
-            <CssBaseline />
-            {layout === "dashboard" && (
-              <>
-                <Sidenav
-                  color={sidenavColor}
-                  brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                  brandName="Microlab Web Platform"
-                  routes={routes}
-                  onMouseEnter={handleOnMouseEnter}
-                  onMouseLeave={handleOnMouseLeave}
-                />
-                <Configurator />
-                {configsButton}
-              </>
-            )}
-            {layout === "vr" && <Configurator />}
-            <Routes>
-              <Route path="login" element={<Navigate to="/auth/login" />} />
-              <Route path="register" element={<Navigate to="/auth/register" />} />
-              <Route path="forgot-password" element={<Navigate to="/auth/forgot-password" />} />
-              {getRoutes(routes)}
-              <Route path="*" element={<Navigate to="/dashboard" />} />
-            </Routes>
-          </ThemeProvider>
-        </CacheProvider>
-      ) : ( */}
         <ThemeProvider theme={darkMode ? themeDark : theme}>
           <CssBaseline />
             <>
@@ -273,19 +173,12 @@ export default function App() {
               {configsButton}
             </>
 
-          {/* {layout === "vr" && <Configurator />} */}
           <Routes>
             <Route path="/" element={<Dashboard/>}/>
             <Route path="/CreateMap" element={<CreateMap/>}/>
             <Route path="/CreateUser" element={<CreateUser/>}/>
             <Route path="/UpdateUser/:id" element={<UpdateUser/>}/>
-            {/* <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/register" element={<Register />} />
-            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-            <Route path="/auth/reset-password" element={<ResetPassword />} /> */}
-
             {getRoutes(routes)}
-            {/* <Route path="/" element={<Navigate to="/dashboard" />} /> */}
           </Routes>
         </ThemeProvider>
     </>

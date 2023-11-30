@@ -9,7 +9,7 @@ import Header from "layouts/user-profile/Header";
 import Button from "@mui/material/Button";
 
 import { Box } from "@mui/material";
-import { StyledButton } from "./styles";
+import { useNavigate } from "react-router-dom";
 
 const CreateUser = ({ setState, forceUpdate}) => {
     const [newUser, setNewUser] = useState({
@@ -42,6 +42,12 @@ const CreateUser = ({ setState, forceUpdate}) => {
           console.error(error);
         }
   }
+
+  const navigate = useNavigate()
+
+  const goBackHandler = () => {
+    navigate(-1)
+  };
 
 
   return (
@@ -199,7 +205,7 @@ const CreateUser = ({ setState, forceUpdate}) => {
 
               </MDBox>
               <MDBox mt={4} display="flex" justifyContent="end">
-              <Button variant="contained" style={{color: "white"}} type="submit">
+              <Button onClick={()=> goBackHandler()} variant="contained" style={{color: "white"}} type="submit">
                 Create User
                 </Button>
               </MDBox>
