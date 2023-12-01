@@ -10,7 +10,6 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
-import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import MDButton from "components/MDButton";
 
 import Temp from "./temp";
@@ -20,33 +19,34 @@ import AccelDial from "./accelDial";
 
 
 const exampleProject1 = () => {
-  const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState({});
+
 
   console.log(messages);
 
-  // const columns = [
-  //   { Header: "Name", accessor: "name", align: "left" },
-  //   { Header: "Phone", accessor: "phone", align: "left" },
-  //   { Header: "Email", accessor: "email", align: "center" },
-  //   { Header: "Role", accessor: "role", align: "center" },
-  //   { Header: "Description", accessor: "description", align: "center" },
-  //   { Header: "Edit", accessor: "edit", align: "center" },
-  //   { Header: "Delete", accessor: "delete", align: "center" },
-  // ]
-
   async function getMessages() {
     try {
-      const response = await axios.get('http://localhost:3001/api/users/');
-      setMessages(response.data);
+      const response = await axios.get('http://localhost:3001/api/messages/');
       console.log(response);
+
+      setMessages({
+        labels: response.data.map(x=> x.message_id),
+        datasets: { label: "Temperature", data: response.data.map(x=> JSON.parse(x.message).temp) },
+      });
+
+      console.log(messages);
     } catch (error) {
       console.error(error);
     }
   }
 
+  useEffect(() => {
+    getMessages();
+  },[]);
 
 
-  const { sales } = reportsLineChartData;
+
+
 
   return (
     <DashboardLayout marginLeft={274}>
@@ -110,8 +110,8 @@ const exampleProject1 = () => {
                     </>
                   }
                   date="updated 4 min ago"
-                  chart={sales}
-                />
+                  chart={messages}
+                /> 
               </MDBox>
             </Grid>
 
