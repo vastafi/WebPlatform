@@ -58,6 +58,7 @@ import ResetPassword from "auth/reset-password";
 import Icon from "@mui/material/Icon";
 import Users from "layouts/users";
 import ExampleProject1 from "layouts/exampleProject1";
+import Drones from "./layouts/drones";
 
 const routes = [
   {
@@ -155,6 +156,14 @@ const routes = [
     icon: <Icon fontSize="small">settings</Icon>,
     route: "/ExampleProject1",
     component: <ExampleProject1 />,
+  },
+  {
+    type: "collapse",
+    name: "Drones",
+    key: "Drones",
+    icon: <Icon fontSize="small">dashboard</Icon>,
+    route: "/Drones",
+    component: <Drones />,
   },
 
   // {
