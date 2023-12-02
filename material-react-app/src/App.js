@@ -105,7 +105,7 @@ export default function App() {
   useEffect(() => {
     document.body.setAttribute("dir", direction);
   }, [direction]);
-  console.log(direction);
+  //console.log(direction);
 
   // Setting page scroll to 0 when changing the route
   useEffect(() => {

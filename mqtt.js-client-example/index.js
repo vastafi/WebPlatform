@@ -98,10 +98,10 @@ setInterval(function () {
   client.publish('agrobot/sensors/temperature/sensor-1', JSON.stringify({'temp': tc, 'sensor_id':1}));
 }, 6000);
 
-// setInterval(function () {
-//   let tc = Math.floor((Math.random() * 10) + 1);
-//   client.publish('agrobot/sensors/temperature/sensor-2', JSON.stringify({'temp': tc, 'sensor_id':2}));
-// }, 60000);
+setInterval(function () {
+  let tc = Math.floor((Math.random() * 10) + 1);
+  client.publish('agrobot/sensors/temperature/sensor-2', JSON.stringify({'hum': tc, 'sensor_id':2}));
+}, 6000);
 
 
 //testing
