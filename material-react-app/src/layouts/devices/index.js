@@ -2,22 +2,17 @@ import { useEffect, useState, useReducer } from "react";
 import axios from "axios";
 import MDBox from "components/MDBox";
 import DeleteIcon from '@mui/icons-material/Delete';
-import Footer from "examples/Footer";
 
-import user from "../../assets/images/user.jpg"
+import DeviceImg from "../../assets/images/Device.png"
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import MDTypography from "components/MDTypography";
 import Tables from "layouts/tables";
-import Icon from "@mui/material/Icon";
 import MDAvatar from "components/MDAvatar";
-import Button from '@mui/material/Button';
 import Box from "@mui/material/Box";
-import CreateUser from "./CreateUser";
-import UpdateUser from "./UpdateUser";
 import { Link } from "react-router-dom";
 
 
-const Users = () => {
+const Devices = () => {
   const [users, setUsers] = useState([])
   const [edit, setEdit] = useState({ state: false, id: null })
   const [toggleForm, setToggleForm] = useState(false)
@@ -30,11 +25,11 @@ const Users = () => {
   });
 
   useEffect(() => {
-    getUsers();
+    getDevices();
   }, [update]);
 
-  const deleteUser = (id) => {
-    axios.delete(`http://localhost:3001/api/users/${id}`);
+  const deleteDevice = (id) => {
+    axios.delete(`http://localhost:3001/api/devices/${id}`);
     forceUpdate()
   }
 
@@ -49,49 +44,39 @@ const Users = () => {
 
   const rows = users.map((item => {
     return {
-      name: <Project image={user} name={item.name} />,
-      phone: (
+      name: <Project image={DeviceImg} name={item.name} />,
+      identifier: (
         <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-          {item.phone}
+          {item.identifier}
         </MDTypography>
-      ),
-      email: (
-        <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-        {item.email}
-      </MDTypography>
-      ),
-      role: (
-        <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-        {item.role}
-      </MDTypography>
       ),
       description: (
         <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-        {item.description}
-      </MDTypography>
+          {item.description}
+        </MDTypography>
+      ),  
+      imgDvc: (
+        <img src={item.image_logo} style={{width: "30px"}} alt="img device"/>
       ),
-      edit: <Link to={`/UpdateUser/${item.user_id}`}> <MDTypography component="div" href="#" variant="button" color="text" fontWeight="medium">
+      edit: <Link to={`/UpdateDevice/${item.device_id}`}> <MDTypography component="div" href="#" variant="button" color="text" fontWeight="medium">
       Edit
     </MDTypography></Link>,
-      delete: <Box onClick={() => deleteUser(item.user_id)}><DeleteIcon fontSize="medium" sx={{ cursor: "pointer" }} /></Box>
+      delete: <Box onClick={() => deleteDevice(item.device_id)}><DeleteIcon fontSize="medium" sx={{ cursor: "pointer" }} /></Box>
     }
   }))
 
-  console.log(users);
-
   const columns = [
     { Header: "Name", accessor: "name", align: "left" },
-    { Header: "Phone", accessor: "phone", align: "left" },
-    { Header: "Email", accessor: "email", align: "center" },
-    { Header: "Role", accessor: "role", align: "center" },
-    { Header: "Description", accessor: "description", align: "center" },
+    { Header: "Identifier", accessor: "identifier", align: "left" },
+    { Header: "Description", accessor: "description", align: "left" },
+    { Header: "Image device", accessor: "imgDvc", align: "left" },
     { Header: "Edit", accessor: "edit", align: "center" },
     { Header: "Delete", accessor: "delete", align: "center" },
   ]
 
-  async function getUsers() {
+  async function getDevices() {
     try {
-      const response = await axios.get('http://localhost:3001/api/users/');
+      const response = await axios.get('http://localhost:3001/api/devices/');
       setUsers(response.data)
     } catch (error) {
       console.error(error);
@@ -102,11 +87,10 @@ const Users = () => {
     <Box sx={{position: "relative", height: "100vh"}}>
       <DashboardLayout>
         <MDBox mb={2} />
-        <Tables rowsData={rows} name={{name: "Users", nameBtn: "New User", route: "/CreateUser"}} columns={columns} func={setToggleForm}/>
-        {toggleForm && <CreateUser setState={setToggleForm} forceUpdate={forceUpdate}/>}
+        <Tables rowsData={rows} name={{name: "Devices", nameBtn: "New Device", route: "/CreateDevice"}} columns={columns} func={setToggleForm}/>
         </DashboardLayout>
     </Box>
   );
 };
 
-export default Users;
+export default Devices;
