@@ -41,6 +41,13 @@ import Dashboard from "layouts/dashboard";
 import CreateMap from "layouts/maps/CreateMap";
 import UpdateUser from "layouts/users/UpdateUser";
 import CreateUser from "layouts/users/CreateUser";
+import UpdateMap from "layouts/maps/UpdateMap";
+import CreateDevice from "layouts/devices/CreateDevice";
+import UpdateDevice from "layouts/devices/UpdateDevice";
+import CreateMission from "layouts/missions/CreateMission";
+import UpdateMission from "layouts/missions/UpdateMission";
+import CreateSensor from "layouts/sensors/CreateSensor";
+import UpdateSensor from "layouts/sensors/UpdateSensor";
 
 export default function App() {
   const authContext = useContext(AuthContext);
@@ -49,7 +56,6 @@ export default function App() {
   const {
     miniSidenav,
     direction,
-    layout,
     openConfigurator,
     sidenavColor,
     transparentSidenav,
@@ -175,9 +181,18 @@ export default function App() {
 
           <Routes>
             <Route path="/" element={<Dashboard/>}/>
+
             <Route path="/CreateMap" element={<CreateMap/>}/>
             <Route path="/CreateUser" element={<CreateUser/>}/>
+            <Route path="/CreateDevice" element={<CreateDevice/>}/>
+            <Route path="/CreateMission" element={<CreateMission/>}/>
+            <Route path="/CreateSensor" element={<CreateSensor/>}/>
+
             <Route path="/UpdateUser/:id" element={<UpdateUser/>}/>
+            <Route path="/UpdateMap/:id" element={<UpdateMap/>}/>
+            <Route path="/UpdateDevice/:id" element={<UpdateDevice/>}/>
+            <Route path="/UpdateMission/:id" element={<UpdateMission/>}/>
+            <Route path="/UpdateSensor/:id" element={<UpdateSensor/>}/>
             {getRoutes(routes)}
           </Routes>
         </ThemeProvider>
