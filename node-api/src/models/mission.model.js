@@ -7,6 +7,7 @@ const Mission = function(mission) {
     this.startDate = mission.startDate;
     this.ttl = mission.ttl;
     this.config = mission.config;
+    this.coordinates = mission.coordinates;
 }
 
 Mission.create = (newMission, result) => {
@@ -58,8 +59,8 @@ Mission.getAll = (result) => {
 
 Mission.updateById = (id, mission, result) => {
     sql.query(
-        "UPDATE mission SET device_id = ?, map_id = ?, user_id = ?, startDate = ?, ttl = ?, config = ? WHERE mission_id = ?",
-        [mission.device_id, mission.map_id, mission.user_id, mission.startDate, mission.ttl, mission.config, id],
+        "UPDATE mission SET device_id = ?, map_id = ?, user_id = ?, startDate = ?, ttl = ?, config = ?, coordinates = ? WHERE mission_id = ?",
+        [mission.device_id, mission.map_id, mission.user_id, mission.startDate, mission.ttl, mission.config, mission.coordinates, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);

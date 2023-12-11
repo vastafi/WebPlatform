@@ -45,7 +45,6 @@ import Maps from "layouts/maps";
 
 import Icon from "@mui/material/Icon";
 import Users from "layouts/users";
-import ExampleProject1 from "layouts/exampleProject1";
 import Drones from "./layouts/drones";
 import ExampleProject1 from "layouts/exampleProject1"
 import Devices from "layouts/devices";

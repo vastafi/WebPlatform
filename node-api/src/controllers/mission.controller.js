@@ -17,7 +17,8 @@ MissionController.create = (req, res) => {
         user_id: req.body.user_id,
         startDate: req.body.startDate,
         ttl: req.body.ttl,
-        config: req.body.config
+        config: req.body.config,
+        coordinates: req.body.coordinates
     });
 
     Mission.create(mission, (err, data) => {
