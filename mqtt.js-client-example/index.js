@@ -36,18 +36,40 @@ client.on('error', mqtt_error);
 client.on('close', mqtt_close);
 client.on('message', mqtt_messsageReceived);
 
+let humTime = 6000;
+let tempTime = 5000;
+
+let timeInterval = null;
+let humInterval = null;
+
+
 //receive a message from MQTT broker
 function mqtt_messsageReceived(topic, message, packet) {
   console.log('Received message on topic:', topic); 
   var message_str = message.toString(); //convert byte array to string
   console.log("message to string", message_str);
   let table_name = "messages_mqqt";
-  try {
-    insert_message(topic, message, table_name);
-  } catch(e){
-    console.log("Error on sql insert message : ", e.message);
-  }
-  
+
+  if(topic == "microlab/agro/device/ventilation/settings"){
+    console.log("settings topic");
+    console.log(message_str);
+    //console.log(JSON.parse(message_str).humTime);
+    //console.log(JSON.parse(message_str).tempTime);
+    clearInterval(humInterval);
+    humTime = JSON.parse(message_str).humTime *1000;
+    setHumInterval(humTime);
+
+    clearInterval(timeInterval);
+    tempTime = JSON.parse(message_str).tempTime * 1000;
+    setTempInterval(tempTime);
+
+  } else {
+    try {
+      insert_message(topic, message, table_name);
+    } catch(e){
+      console.log("Error on sql insert message : ", e.message);
+    }
+  }  
 };
 
 //insert a row into the db table
@@ -92,17 +114,24 @@ function mqtt_subscribe(err, Topic) {
 
 // subscribe and publish to the same topic
 client.subscribe('agrobot/sensors/#', mqtt_subscribe);
+client.subscribe('microlab/agro/#', mqtt_subscribe);
 
-setInterval(function () {
-  let tc = Math.floor((Math.random() * 100) + 1);
-  client.publish('agrobot/sensors/temperature/sensor-1', JSON.stringify({'temp': tc, 'sensor_id':1}));
-}, 6000);
+function setTempInterval(tempTime){
+  timeInterval = setInterval(function () {
+    let tc = Math.floor((Math.random() * 100) + 1);
+    client.publish('agrobot/sensors/temperature/sensor-1', JSON.stringify({'temp': tc, 'sensor_id':1}));
+  }, tempTime);
+}
+function setHumInterval(humTime){
+    humInterval = setInterval(function () {
+      let tc = Math.floor((Math.random() * 10) + 1);
+      client.publish('agrobot/sensors/temperature/sensor-2', JSON.stringify({'hum': tc, 'sensor_id':2}));
+    }, humTime);
+}
 
-setInterval(function () {
-  let tc = Math.floor((Math.random() * 10) + 1);
-  client.publish('agrobot/sensors/temperature/sensor-2', JSON.stringify({'hum': tc, 'sensor_id':2}));
-}, 6000);
-
+setTempInterval(tempTime);
+setHumInterval(humTime);
 
 //testing
-import connection from "./db.js";
+import connection from "./db.js";import { clearInterval } from 'timers';
+

@@ -56,10 +56,28 @@ const exampleProject1 = () => {
   }, []);
 
   /*   Set Data */
-  const [settings, setSettings] = useState(null);
+  const [settingsTempTime, setSettingsTempTime] = useState(0);
+  const [settingsHumTime, setSettingsHumTime] = useState(0);
 
-  const changeHandler = (e) => {
-    setSettings(e.target.value);
+
+  function setMqttData() {
+    try {
+      let publishSettings = JSON.stringify({ 'humTime': settingsHumTime, 'tempTime': settingsTempTime });
+      console.log(publishSettings);
+
+      let result = client.publish('microlab/agro/device/ventilation/settings', publishSettings);
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const changeTempSettingsHandler = (e) => {
+    setSettingsTempTime(e.target.value);
+  };
+
+  const changeHumiditySettingsHandler = (e) => {
+    setSettingsHumTime(e.target.value);
   };
 
 
@@ -70,9 +88,6 @@ const exampleProject1 = () => {
 
   const [temp, setTemp] = useState(0);
   const [hum, setHum] = useState(0);
-
-
-
 
   const tempTopic = 'agrobot/sensors/temperature/sensor-1';
   const humTopic = 'agrobot/sensors/temperature/sensor-2';
@@ -160,37 +175,63 @@ const exampleProject1 = () => {
             </MDBox>
 
             <MDBox mb={1.5}>
-              <MDButton variant="gradient" color="info" fullWidth type="submit">
-                Set Data
+              <MDButton variant="gradient" color="info" fullWidth type="submit" onClick={(e) => setMqttData(e)}>
+                Set MQTT Data
               </MDButton>
             </MDBox>
 
-            <MDBox mb={1.5}>
-              <MDBox mb={2}>
-                <MDInput
-                  type="text"
-                  label="Settings"
-                  fullWidth
-                  value={settings}
-                  name="settings"
-                  onChange={changeHandler}
-                />
-              </MDBox>
+            <Grid container spacing={1}>
 
-            </MDBox>
+              <Grid item md={6} >
+                <MDBox mb={1.5}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Temp time (sec)"
+                      fullWidth
+                      value={settingsTempTime}
+                      name="settingsTempTime"
+                      onChange={changeTempSettingsHandler}
+                    />
+                  </MDBox>
+                </MDBox>
+              </Grid>
+              <Grid item md={6} >
+                <MDBox mb={1.5}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Humidity time (sec)"
+                      fullWidth
+                      value={settingsHumTime}
+                      name="settingsHumTime"
+                      onChange={changeHumiditySettingsHandler}
+                    />
+                  </MDBox>
+                </MDBox>
+              </Grid>
+
+
+            </Grid>
+
+
 
           </Grid>
 
           <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <MDTypography > MQTT status : {connectStatus}</MDTypography>
-            </MDBox>
-            <MDBox mb={1.5}>
-              <MDTypography > Current Settings : {settings}</MDTypography>
-            </MDBox>
+              <MDBox mb={1.5}>
+                <MDTypography > MQTT status : {connectStatus}</MDTypography>
+              </MDBox>
+              <MDBox mb={1.5}>
+                <MDTypography > Current Settings :</MDTypography>
+                <MDTypography > Temperature time :{settingsTempTime}</MDTypography>
+                <MDTypography > Humidity time :{settingsHumTime}</MDTypography>
 
-          </Grid>
+              </MDBox>
+
+            </Grid>
         </Grid>
+
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
 
