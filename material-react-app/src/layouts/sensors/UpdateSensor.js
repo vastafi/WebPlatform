@@ -9,35 +9,35 @@ import Header from "layouts/user-profile/Header";
 import Button from "@mui/material/Button";
 
 import { Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const CreateUser = ({ setState, forceUpdate}) => {
-    const [newUser, setNewUser] = useState({
+const UpdateSensor = () => {
+    const [newSensor, setNewSensor] = useState({
         name: "",
-        phone: "",
-        email: "",
-        role: "",
+        ttl: "",
+        identifier: "",
         description: "",
       });
   const [errors, setErrors] = useState({
     nameError: false,
-    emailError: false,
-    phoneError: false,
-    roleError: false,
+    ttlError: false,
+    identifierError: false,
     descriptionError: false,
   });
 
     const changeHandler = (e) => {
-      setNewUser({
-        ...newUser,
+      setNewSensor({
+        ...newSensor,
         [e.target.name]: e.target.value,
       });
     };
 
+    const id = useParams()
+
   const submitHandler = (e) => {
       e.preventDefault()
       try {
-          axios.post('http://localhost:3001/api/users/', {...newUser});
+          axios.put('http://localhost:3001/api/sensors/', {...newSensor, id:id.id});
         } catch (error) {
           console.error(error);
         }
@@ -48,6 +48,23 @@ const CreateUser = ({ setState, forceUpdate}) => {
   const goBackHandler = () => {
     navigate(-1)
   };
+
+
+
+  useEffect(() => {
+    getSensor()
+  }, [])
+
+  async function getSensor() {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/sensors/${id.id}`);
+      setNewSensor(response.data)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  console.log(newSensor);
 
 
   return (
@@ -77,7 +94,7 @@ const CreateUser = ({ setState, forceUpdate}) => {
                     type="name"
                     fullWidth
                     name="name"
-                    value={newUser.name}
+                    value={newSensor.name}
                     placeholder="name"
                     onChange={changeHandler}
                   />
@@ -97,21 +114,20 @@ const CreateUser = ({ setState, forceUpdate}) => {
                 ml={2}
               >
                 <MDTypography variant="body2" color="text" ml={1} fontWeight="regular">
-                  Phone
+                  TTL
                 </MDTypography>
                 <MDBox mb={1} width="100%">
                   <MDInput
                     type="number"
                     fullWidth
-                    name="phone"
-                    placeholder="phone"
-                    value={newUser.phone}
+                    name="ttl"
+                    placeholder="ttl"
+                    value={newSensor.ttl}
                     onChange={changeHandler}
-                    error={errors.phoneError}
                   />
-                  {errors.phoneError && (
+                  {errors.ttlError && (
                     <MDTypography variant="caption" color="error" fontWeight="light">
-                      The phone must be valid
+                      The ttl must be valid
                     </MDTypography>
                   )}
                 </MDBox>
@@ -128,20 +144,20 @@ const CreateUser = ({ setState, forceUpdate}) => {
                   mr={2}
                 >
                   <MDTypography variant="body2" color="text" ml={1} fontWeight="regular">
-                  Email
+                  Identifier
                   </MDTypography>
-                  <MDBox mb={2} width="100%">
+                  <MDBox mb={0} width="100%">
                     <MDInput
                       type="text"
                       fullWidth
-                      name="email"
-                      placeholder="email"
-                      value={newUser.email}
+                      name="identifier"
+                      placeholder="identifier"
+                      value={newSensor.identifier}
                       onChange={changeHandler}
                     />
-                    {errors.emailError && (
+                    {errors.identifierError && (
                       <MDTypography variant="caption" color="error" fontWeight="light">
-                        The email must be valid
+                        The identifier must be valid
                       </MDTypography>
                     )}
                   </MDBox>
@@ -154,44 +170,15 @@ const CreateUser = ({ setState, forceUpdate}) => {
                   ml={2}
                 >
                   <MDTypography variant="body2" color="text" ml={1} fontWeight="regular">
-                    Role
+                    Description
                   </MDTypography>
                   <MDBox mb={1} width="100%">
                     <MDInput
                       type="text"
                       fullWidth
-                      name="role"
-                      placeholder="role"
-                      value={newUser.role}
-                      onChange={changeHandler}
-                    />
-                    {errors.roleError && (
-                      <MDTypography variant="caption" color="error" fontWeight="light">
-                        The role must be valid
-                      </MDTypography>
-                    )}
-                  </MDBox>
-                </MDBox>
-              </MDBox>
-            </MDBox>
-            <MDBox display="flex" flexDirection="column" mb={3}>
-              <MDBox display="flex" flexDirection="row">
-                <MDBox
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="flex-start"
-                  width="100%"
-                >
-                  <MDTypography variant="body2" color="text" ml={1} fontWeight="regular">
-                    Description
-                  </MDTypography>
-                  <MDBox mb={2} width="100%">
-                    <MDInput
-                      type="text"
-                      fullWidth
                       name="description"
                       placeholder="description"
-                      value={newUser.description}
+                      value={newSensor.description}
                       onChange={changeHandler}
                     />
                     {errors.descriptionError && (
@@ -201,14 +188,15 @@ const CreateUser = ({ setState, forceUpdate}) => {
                     )}
                   </MDBox>
                 </MDBox>
-
               </MDBox>
-              <MDBox mt={4} display="flex" justifyContent="space-between" >
+            </MDBox>
+            <MDBox display="flex" flexDirection="column" mb={3}>
+              <MDBox mt={0} display="flex" justifyContent="space-between" >
               <Button onClick={()=> goBackHandler()} variant="contained" style={{color: "white", backgroundColor: "red"}} type="button">
                 Close
                 </Button>
               <Button onClick={()=> goBackHandler()} variant="contained" style={{color: "white"}} type="submit">
-                Create User
+                Update Sensor
                 </Button>
               </MDBox>
             </MDBox>
@@ -220,4 +208,4 @@ const CreateUser = ({ setState, forceUpdate}) => {
   );
 };
 
-export default CreateUser;
+export default UpdateSensor;

@@ -37,28 +37,20 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Billing from "layouts/billing";
-import RTL from "layouts/rtl";
-import Notifications from "layouts/notifications";
-import Profile from "layouts/profile";
-import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
+
 
 import UserProfile from "layouts/user-profile";
 import Maps from "layouts/maps";
-import UserManagement from "layouts/user-management";
 
-import Login from "auth/login";
-import Register from "auth/register";
-import ForgotPassword from "auth/forgot-password";
-import ResetPassword from "auth/reset-password";
 
-// @mui icons
 import Icon from "@mui/material/Icon";
 import Users from "layouts/users";
 import ExampleProject1 from "layouts/exampleProject1";
 import Drones from "./layouts/drones";
+import ExampleProject1 from "layouts/exampleProject1"
+import Devices from "layouts/devices";
+import Missions from "layouts/missions";
+import Sensors from "layouts/sensors";
 
 const routes = [
   {
@@ -69,54 +61,6 @@ const routes = [
     route: "/user-profile",
     component: <UserProfile />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Tables",
-  //   key: "tables",
-  //   icon: <Icon fontSize="small">table_view</Icon>,
-  //   route: "/tables",
-  //   component: <Tables />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Billing",
-  //   key: "billing",
-  //   icon: <Icon fontSize="small">receipt_long</Icon>,
-  //   route: "/billing",
-  //   component: <Billing />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "RTL",
-  //   key: "rtl",
-  //   icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
-  //   route: "/rtl",
-  //   component: <RTL />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Notifications",
-  //   key: "notifications",
-  //   icon: <Icon fontSize="small">notifications</Icon>,
-  //   route: "/notifications",
-  //   component: <Notifications />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Profile",
-  //   key: "profile",
-  //   icon: <Icon fontSize="small">person</Icon>,
-  //   route: "/profile",
-  //   component: <Profile />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Sign In",
-  //   key: "sign-in",
-  //   icon: <Icon fontSize="small">login</Icon>,
-  //   route: "/authentication/sign-in",
-  //   component: <SignIn />,
-  // },
   {
     type: "collapse",
     name: "Dashboard",
@@ -130,7 +74,7 @@ const routes = [
     name: "Maps",
     key: "Maps",
     icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/Maps",
+    route: "/Maps/*",
     component: <Maps />,
   },
   {
@@ -140,6 +84,30 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/Users",
     component: <Users />,
+  },
+  {
+    type: "collapse",
+    name: "Devices",
+    key: "Devices",
+    icon: <Icon fontSize="small">dashboard</Icon>,
+    route: "/Devices",
+    component: <Devices />,
+  },
+  {
+    type: "collapse",
+    name: "Missions",
+    key: "Missions",
+    icon: <Icon fontSize="small">dashboard</Icon>,
+    route: "/Missions",
+    component: <Missions />,
+  },
+  {
+    type: "collapse",
+    name: "Sensors",
+    key: "Sensors",
+    icon: <Icon fontSize="small">dashboard</Icon>,
+    route: "/Sensors",
+    component: <Sensors />,
   },
   {
     type: "divider",
@@ -165,55 +133,6 @@ const routes = [
     route: "/Drones",
     component: <Drones />,
   },
-
-  // {
-  //   type: "examples",
-  //   name: "User Management",
-  //   key: "user-management",
-  //   icon: <Icon fontSize="small">list</Icon>,
-  //   route: "/user-management",
-  //   component: <UserManagement />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Sign Up",
-  //   key: "sign-up",
-  //   icon: <Icon fontSize="small">assignment</Icon>,
-  //   route: "/authentication/sign-up",
-  //   component: <SignUp />,
-  // },
-  // {
-  //   type: "auth",
-  //   name: "Login",
-  //   key: "login",
-  //   icon: <Icon fontSize="small">login</Icon>,
-  //   route: "/auth/login",
-  //   component: <Login />,
-  // },
-  // {
-  //   type: "auth",
-  //   name: "Register",
-  //   key: "register",
-  //   icon: <Icon fontSize="small">reigster</Icon>,
-  //   route: "/auth/register",
-  //   component: <Register />,
-  // },
-  // {
-  //   type: "auth",
-  //   name: "Forgot Password",
-  //   key: "forgot-password",
-  //   icon: <Icon fontSize="small">assignment</Icon>,
-  //   route: "/auth/forgot-password",
-  //   component: <ForgotPassword />,
-  // },
-  // {
-  //   type: "auth",
-  //   name: "Reset Password",
-  //   key: "reset-password",
-  //   icon: <Icon fontSize="small">assignment</Icon>,
-  //   route: "/auth/reset-password",
-  //   component: <ResetPassword />,
-  // },
 ];
 
 export default routes;

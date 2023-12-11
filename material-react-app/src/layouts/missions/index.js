@@ -2,22 +2,17 @@ import { useEffect, useState, useReducer } from "react";
 import axios from "axios";
 import MDBox from "components/MDBox";
 import DeleteIcon from '@mui/icons-material/Delete';
-import Footer from "examples/Footer";
 
-import user from "../../assets/images/user.jpg"
+import MissionsImg from "../../assets/images/Missions.png"
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import MDTypography from "components/MDTypography";
 import Tables from "layouts/tables";
-import Icon from "@mui/material/Icon";
 import MDAvatar from "components/MDAvatar";
-import Button from '@mui/material/Button';
 import Box from "@mui/material/Box";
-import CreateUser from "./CreateUser";
-import UpdateUser from "./UpdateUser";
 import { Link } from "react-router-dom";
 
 
-const Users = () => {
+const Missions = () => {
   const [users, setUsers] = useState([])
   const [edit, setEdit] = useState({ state: false, id: null })
   const [toggleForm, setToggleForm] = useState(false)
@@ -30,11 +25,11 @@ const Users = () => {
   });
 
   useEffect(() => {
-    getUsers();
+    getMissions();
   }, [update]);
 
-  const deleteUser = (id) => {
-    axios.delete(`http://localhost:3001/api/users/${id}`);
+  const deleteMission = (id) => {
+    axios.delete(`http://localhost:3001/api/missions/${id}`);
     forceUpdate()
   }
 
@@ -49,49 +44,60 @@ const Users = () => {
 
   const rows = users.map((item => {
     return {
-      name: <Project image={user} name={item.name} />,
-      phone: (
+      name: <Project image={MissionsImg} name={item.mission_id} />,
+      Device_id: (
         <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-          {item.phone}
+          {item.device_id}
         </MDTypography>
       ),
-      email: (
+      Map_id: (
         <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-        {item.email}
+          {item.map_id}
+        </MDTypography>
+      ),  
+      User_id: (
+        <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
+        {item.user_id}
       </MDTypography>
       ),
-      role: (
+      Start_Date: (
         <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-        {item.role}
+        {item.startDate}
       </MDTypography>
       ),
-      description: (
+      ttl: (
         <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-        {item.description}
+        {item.ttl}
       </MDTypography>
       ),
-      edit: <Link to={`/UpdateUser/${item.user_id}`}> <MDTypography component="div" href="#" variant="button" color="text" fontWeight="medium">
+      config: (
+        <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
+        {item.config}
+      </MDTypography>
+      ),
+      edit: <Link to={`/UpdateMission/${item.mission_id}`}> <MDTypography component="div" href="#" variant="button" color="text" fontWeight="medium">
       Edit
     </MDTypography></Link>,
-      delete: <Box onClick={() => deleteUser(item.user_id)}><DeleteIcon fontSize="medium" sx={{ cursor: "pointer" }} /></Box>
+      delete: <Box onClick={() => deleteMission(item.mission_id)}><DeleteIcon fontSize="medium" sx={{ cursor: "pointer" }} /></Box>
     }
   }))
 
-  console.log(users);
 
   const columns = [
-    { Header: "Name", accessor: "name", align: "left" },
-    { Header: "Phone", accessor: "phone", align: "left" },
-    { Header: "Email", accessor: "email", align: "center" },
-    { Header: "Role", accessor: "role", align: "center" },
-    { Header: "Description", accessor: "description", align: "center" },
+    { Header: "Id", accessor: "name", align: "left" },
+    { Header: "Device ID", accessor: "Device_id", align: "left" },
+    { Header: "Map ID", accessor: "Map_id", align: "left" },
+    { Header: "User Id", accessor: "User_id", align: "left" },
+    { Header: "Start Date", accessor: "Start_Date", align: "left" },
+    { Header: "TTL", accessor: "ttl", align: "left" },
+    { Header: "Config", accessor: "config", align: "left" },
     { Header: "Edit", accessor: "edit", align: "center" },
     { Header: "Delete", accessor: "delete", align: "center" },
   ]
 
-  async function getUsers() {
+  async function getMissions() {
     try {
-      const response = await axios.get('http://localhost:3001/api/users/');
+      const response = await axios.get('http://localhost:3001/api/missions/');
       setUsers(response.data)
     } catch (error) {
       console.error(error);
@@ -102,11 +108,10 @@ const Users = () => {
     <Box sx={{position: "relative", height: "100vh"}}>
       <DashboardLayout>
         <MDBox mb={2} />
-        <Tables rowsData={rows} name={{name: "Users", nameBtn: "New User", route: "/CreateUser"}} columns={columns} func={setToggleForm}/>
-        {toggleForm && <CreateUser setState={setToggleForm} forceUpdate={forceUpdate}/>}
+        <Tables rowsData={rows} name={{name: "Devices", nameBtn: "New Mission", route: "/CreateMission"}} columns={columns} func={setToggleForm}/>
         </DashboardLayout>
     </Box>
   );
 };
 
-export default Users;
+export default Missions;

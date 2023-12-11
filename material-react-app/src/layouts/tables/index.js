@@ -24,15 +24,14 @@ import MDTypography from "components/MDTypography";
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 
 // Data
-import authorsTableData from "layouts/tables/data/authorsTableData";
-import projectsTableData from "layouts/tables/data/projectsTableData";
-import { StyledButton } from "layouts/maps/styles";
+import { Link } from "react-router-dom";
 
-function Tables({rowsData, columns, func, name}) {
+
+function Tables({ rowsData, columns, func, name }) {
+  console.log(name.route);
 
   return (
     <DashboardLayout>
@@ -65,7 +64,7 @@ function Tables({rowsData, columns, func, name}) {
                   noEndBorder
                 />
               </MDBox>
-              <StyledButton onClick={() => func(true)} >{name.nameBtn}</StyledButton>
+                <Link style={{color: "white", width: "100%", backgroundColor: "rgb(31, 99, 255)", textAlign: "center", borderRadius: "8px", fontSize: "16px", padding: "10px 0px", fontFamily: "'Roboto', sans-serif", fontWeight: "bold"}} to={name.route}>{name.nameBtn}</Link>
             </Card>
           </Grid>
         </Grid>

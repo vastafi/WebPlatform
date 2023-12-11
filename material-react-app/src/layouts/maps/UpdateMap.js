@@ -6,55 +6,61 @@ import MDInput from "components/MDInput";
 
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import Header from "layouts/user-profile/Header";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { Box } from "@mui/material";
-import { StyledButton } from "./styles";
+import { Box, Button } from "@mui/material";
 
-const CreateMap = ({id, setState, forceUpdate}) => {
-    const [newMap, setNewMap] = useState({
-        zoom: "",
-        centerLat: "",
-        centerLng: "",
-        name: "",
-      });
-  const [errors, setErrors] = useState({
-    nameError: false,
-    emailError: false,
-    newPassError: false,
-    confirmPassError: false,
+const UpdateMap = () => {
+  const [newMap, setNewMap] = useState({
+    zoom: "",
+    centerLat: "",
+    centerLng: "",
+    name: "",
   });
 
-  const [map, setMap] = useState({})
+  const id = useParams()
+  async function getMap() {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/maps/${id.id}`);
+      setNewMap(response.data)
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
+  const changeHandler = (e) => {
+    setNewMap({
+      ...newMap,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    const changeHandler = (e) => {
-      setNewMap({
-        ...newMap,
-        [e.target.name]: e.target.value,
-      });
-    };
+  useEffect(()=> {
+    getMap()
+  },[])
 
   const submitHandler = (e) => {
-      e.preventDefault()
-      const d = new Date();
-      const month = d.getMonth()
-      const year = d.getFullYear()
-      const date = d.getDate()
-      const newDate = `${year}/${month}/${date}`
-      try {
-        console.log("it's ok");
-          axios.post('http://localhost:3001/api/maps/', {...newMap, date: newDate,});
-        } catch (error) {
-          console.error(error);
-        }
-
-        setState(false)
-        forceUpdate()
+    e.preventDefault()
+    const d = new Date();
+    const month = d.getMonth()
+    const year = d.getFullYear()
+    const date = d.getDate()
+    const newDate = `${year}/${month}/${date}`
+    try {
+      axios.post('http://localhost:3001/api/maps/', { ...newMap, date: newDate, });
+    } catch (error) {
+      console.error(error);
+    }
   }
+  const navigate = useNavigate()
+
+  const goBackHandler = () => {
+    navigate(-1)
+  };
 
 
   return (
-    <Box sx={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "70%"}}>
+    <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "70%" }}>
       <DashboardLayout>
         <Header name="NewMap">
           <MDBox
@@ -84,12 +90,6 @@ const CreateMap = ({id, setState, forceUpdate}) => {
                     placeholder="name"
                     onChange={changeHandler}
                   />
-                  {errors.nameError && (
-                    <MDTypography variant="caption" color="error" fontWeight="light">
-                      The name can not be null
-                    </MDTypography>
-                  )}
-
                 </MDBox>
               </MDBox>
               <MDBox
@@ -110,13 +110,7 @@ const CreateMap = ({id, setState, forceUpdate}) => {
                     placeholder="zoom"
                     value={newMap.zoom}
                     onChange={changeHandler}
-                    error={errors.emailError}
                   />
-                  {errors.emailError && (
-                    <MDTypography variant="caption" color="error" fontWeight="light">
-                      The zoom must be valid
-                    </MDTypography>
-                  )}
                 </MDBox>
               </MDBox>
             </MDBox>
@@ -142,11 +136,6 @@ const CreateMap = ({id, setState, forceUpdate}) => {
                       value={newMap.centerLat}
                       onChange={changeHandler}
                     />
-                    {errors.newPassError && (
-                      <MDTypography variant="caption" color="error" fontWeight="light">
-                        The centerLat must be valid
-                      </MDTypography>
-                    )}
                   </MDBox>
                 </MDBox>
                 <MDBox
@@ -168,18 +157,16 @@ const CreateMap = ({id, setState, forceUpdate}) => {
                       value={newMap.centerLng}
                       onChange={changeHandler}
                     />
-                    {errors.confirmPassError && (
-                      <MDTypography variant="caption" color="error" fontWeight="light">
-                        The centerLng must be valid
-                      </MDTypography>
-                    )}
                   </MDBox>
                 </MDBox>
               </MDBox>
-              <MDBox mt={4} display="flex" justifyContent="end">
-                <StyledButton variant="gradient" color="info" type="submit">
-                  Create Map
-                </StyledButton>
+              <MDBox mt={4} display="flex" justifyContent="space-between">
+                <Button onClick={() => goBackHandler()} variant="contained" style={{ color: "white", backgroundColor: "red" }} type="button">
+                  Close
+                </Button>
+                <Button onClick={() => goBackHandler()} variant="contained" style={{ color: "white" }} type="submit">
+                  Update Map
+                </Button>
               </MDBox>
             </MDBox>
           </MDBox>
@@ -190,4 +177,4 @@ const CreateMap = ({id, setState, forceUpdate}) => {
   );
 };
 
-export default CreateMap;
+export default UpdateMap;

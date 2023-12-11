@@ -7,17 +7,21 @@ import MDInput from "components/MDInput";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import Header from "layouts/user-profile/Header";
 
-import { Box } from "@mui/material";
-import { StyledButton } from "./styles";
+import { Box, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const UpdateUser = ({id, setState, forceUpdate}) => {
-    const [user, setUser] = useState({
-        name: "",
-        phone: "",
-        email: "",
-        role: "",
-        description: "",
-      });
+const UpdateUser = () => {
+  const [user, setUser] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    role: "",
+    description: "",
+  });
+
+
+  const id = useParams()
   const [errors, setErrors] = useState({
     nameError: false,
     emailError: false,
@@ -26,40 +30,46 @@ const UpdateUser = ({id, setState, forceUpdate}) => {
     descriptionError: false,
   });
 
+  console.log(id);
+
   async function getUser() {
     try {
-      const response = await axios.get(`http://localhost:3001/api/users/${id}`);
+      const response = await axios.get(`http://localhost:3001/api/users/${id.id}`);
       setUser(response.data)
     } catch (error) {
       console.error(error);
     }
   }
-  
-  useEffect(()=> {
-    getUser()
-  },[])
 
-    const changeHandler = (e) => {
-      setUser({
-        ...user,
-        [e.target.name]: e.target.value,
-      });
-    };
+  useEffect(() => {
+    getUser()
+  }, [])
+
+  const changeHandler = (e) => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const submitHandler = (e) => {
-      e.preventDefault()
-      try {
-          axios.put('http://localhost:3001/api/users/', {...user, id:id});
-        } catch (error) {
-          console.error(error);
-        }
-        setState(false)
-        forceUpdate()
+    e.preventDefault()
+    try {
+      axios.put('http://localhost:3001/api/users/', { ...user, id: id.id });
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+  const navigate = useNavigate()
+
+  const goBackHandler = () => {
+    navigate(-1)
+  };
 
 
   return (
-    <Box sx={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "70%"}}>
+    <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "70%" }}>
       <DashboardLayout>
         <Header name="NewMap">
           <MDBox
@@ -136,7 +146,7 @@ const UpdateUser = ({id, setState, forceUpdate}) => {
                   mr={2}
                 >
                   <MDTypography variant="body2" color="text" ml={1} fontWeight="regular">
-                  Email
+                    Email
                   </MDTypography>
                   <MDBox mb={2} width="100%">
                     <MDInput
@@ -189,7 +199,6 @@ const UpdateUser = ({id, setState, forceUpdate}) => {
                   flexDirection="column"
                   alignItems="flex-start"
                   width="100%"
-                  mr={2}
                 >
                   <MDTypography variant="body2" color="text" ml={1} fontWeight="regular">
                     Description
@@ -212,10 +221,13 @@ const UpdateUser = ({id, setState, forceUpdate}) => {
                 </MDBox>
 
               </MDBox>
-              <MDBox mt={4} display="flex" justifyContent="end">
-                <StyledButton variant="gradient" color="info" type="submit">
-                  Create User
-                </StyledButton>
+              <MDBox mt={4} display="flex" justifyContent="space-between">
+                <Button onClick={() => goBackHandler()} variant="contained" style={{ color: "white", backgroundColor: "red" }} type="button">
+                  Close
+                </Button>
+                <Button onClick={() => goBackHandler()} variant="contained" style={{ color: "white" }} type="submit">
+                  Update User
+                </Button>
               </MDBox>
             </MDBox>
           </MDBox>
