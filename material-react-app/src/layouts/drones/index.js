@@ -2,19 +2,24 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import { Autocomplete, Box, TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import {MapContainer, Marker, Polyline, Popup, TileLayer} from "react-leaflet";
 import Grid from "@mui/material/Grid";
-import ReportsLineChart from "../../examples/Charts/LineCharts/ReportsLineChart";
-import reportsLineChartData from "../dashboard/data/reportsLineChartData";
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import flower1 from '../../assets/images/dronesProject/flower1.jpg'
 import flower2 from '../../assets/images/dronesProject/flower2.jpg'
 import flower3 from '../../assets/images/dronesProject/flower3.jpg'
+import Battery from "../exampleProject1/battery";
+import mqtt from "mqtt";
+import { options } from "../../config/mqtt.config";
+import { host } from "../../config/mqtt.config";
+import DashboardNavbar from "../../examples/Navbars/DashboardNavbar";
+import Footer from "../../examples/Footer";
+import ReportsLineChart from "../../examples/Charts/LineCharts/ReportsLineChart";
 
 const Drones = () => {
-    const [options, setOptions] = useState({
+    const [optionsMission, setOptionsMission] = useState({
         devicesId: [],
         missionsId: [],
     });
@@ -34,18 +39,23 @@ const Drones = () => {
     const [markers, setMarkers] = useState([]);
     const [coordinates, setCoordinates] = useState([]);
     const [lines, setLines] = useState([]);
-    const { sales } = reportsLineChartData;
+    const [client, setClient] = useState(null);
+    const [connectStatus, setConnectStatus] = useState(null);
+    const [battery, setBattery] = useState(0);
+    const batteryTopic = 'microlab/automotive/device/drone/battery-1';
+    const [messages, setMessages] = useState({});
+    const [count, setCount] = useState(4);
 
-    async function getOptions() {
+    async function getOptionsMission() {
         try {
             const responseDevices = await axios.get(`http://localhost:3001/api/devices/`);
-            setOptions((prevOptions) => ({
+            setOptionsMission((prevOptions) => ({
                 ...prevOptions,
                 devicesId: responseDevices.data.map((item) => ({ label: String(item.name) })),
             }));
 
             const responseMission = await axios.get(`http://localhost:3001/api/missions/`);
-            setOptions((prevOptions) => ({
+            setOptionsMission((prevOptions) => ({
                 ...prevOptions,
                 missionsId: responseMission.data.map((item) => ({ label: String(item.mission_id) })),
             }));
@@ -55,7 +65,7 @@ const Drones = () => {
     }
 
     useEffect(() => {
-        getOptions()
+        getOptionsMission()
     }, [])
 
     async function fetchMapIdForMissionId(missionId) {
@@ -102,11 +112,9 @@ const Drones = () => {
                                 center: [mapInfo.centerLat, mapInfo.centerLng],
                                 zoom: mapInfo.zoom,
                             });
-                            console.log('mapInfo', mapInfo)
 
                             const newCoordinates = mapInfo.coordinates || [];
                             setCoordinates(newCoordinates);
-                            console.log(newCoordinates)
 
                             if (newCoordinates.length >= 2) {
                                 setLines([
@@ -172,9 +180,83 @@ const Drones = () => {
         });
     };
 
+    console.log(messages);
+    async function getMessages() {
+        try {
+            const requestFlowerNumbering = {
+                "topic": "microlab/automotive/device/drone/flowerNumbering-1"
+            };
+            const response =
+                await axios.post('http://localhost:3001/api/messages/getByTopic', requestFlowerNumbering);
+
+            let result = response.data;
+            console.log(result.length);
+
+            let shortResult = result.splice(result.length - 50, result.length);
+
+            setMessages({
+                labels: shortResult.map(x => x.message_id),
+                datasets: { label: "Number of Flowers", data: shortResult.map(x => JSON.parse(x.message).flowerNumbering) },
+            });
+            const resp = shortResult.map(x => JSON.parse(x.message).flowerNumbering);
+            setCount(resp[49] + " flowers");
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        getMessages();
+        //automatically update the chart data each 5 seconds
+        const intervalId = setInterval(() => {
+            getMessages();
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, []);
+
+    const mqttConnect = () => {
+        setConnectStatus('Connecting');
+        let client = mqtt.connect(host, options);
+        setClient(client);
+    };
+
+    useEffect(() => {
+        mqttConnect();
+    }, []);
+
+    useEffect(() => {
+        if (client) {
+            console.log(client);
+            client.on('connect', () => {
+                setConnectStatus('Connected');
+
+                client.subscribe(batteryTopic);
+            });
+            client.on('error', (err) => {
+                console.error('Connection error: ', err);
+                client.end();
+            });
+            client.on('reconnect', () => {
+                setConnectStatus('Reconnecting');
+            });
+
+            client.on('message', (topic, message) => {
+                setConnectStatus('Message received');
+
+                if (topic === batteryTopic) {
+                    setBattery(JSON.parse(message.toString()).battery);
+                }
+                console.log(message.toString());
+            });
+
+        }
+    }, [client]);
+
+
     return (
-        <Box sx={{ position: "absolute", top: "60%", left: "53%", transform: "translate(-50%, -50%)", width: "87%" }}>
-            <DashboardLayout>
+                <DashboardLayout marginLeft={274}>
+                    <DashboardNavbar />
                 <MDBox display="flex" flexDirection="row" mt={5} mb={3}>
                     <MDBox
                         display="flex"
@@ -186,7 +268,7 @@ const Drones = () => {
                         <MDBox mb={2} width="100%">
                             <Autocomplete
                                 disablePortal
-                                options={options.devicesId}
+                                options={optionsMission.devicesId}
                                 id="device_name"
                                 onChange={changeHandleAutocomplete}
                                 name="deviceName"
@@ -204,14 +286,24 @@ const Drones = () => {
                     >
                         <MDBox mb={0} width="100%">
                             <Autocomplete
-                                options={options.missionsId}
+                                options={optionsMission.missionsId}
                                 id="mission_id"
                                 onChange={changeHandleAutocomplete}
                                 renderInput={(params) => <TextField {...params} label="Mission id" />}
                             />
                         </MDBox>
                     </MDBox>
-
+                    <MDBox
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="flex-start"
+                        width="100%"
+                        ml={2}
+                    >
+                        <MDBox mb={0} width="100%">
+                            <Battery percentage={battery} />
+                        </MDBox>
+                    </MDBox>
                 </MDBox>
                 <MDBox display="flex" flexDirection="row" mt={5} mb={3}>
                     <MDBox
@@ -265,26 +357,24 @@ const Drones = () => {
                 </MDBox>
                 <MDBox>
                     <Grid container spacing={3}>
-                        <Grid item xs={12} md={12} lg={12}>
-                            <MDBox mb={3} width="100%">
-                                <ReportsLineChart
-                                    color="success"
-                                    title="Statistics"
-                                    description={
-                                        <>
-                                            Total number of flowers <strong>205</strong>.
-                                        </>
-                                    }
-                                    date="updated 4 min ago"
-                                    chart={sales}
-                                />
-                            </MDBox>
-                        </Grid>
+                            <Grid item xs={12} md={12} lg={12}>
+                                <MDBox mb={3}>
+                                    <ReportsLineChart
+                                        color="success"
+                                        title="Number of Flowers"
+                                        description={
+                                            <>
+                                                Total number of flowers <strong>205</strong>.
+                                            </>
+                                        }
+                                        date="updated 4 min ago"
+                                        chart={messages}                                    />
+                                </MDBox>
+                            </Grid>
                     </Grid>
-
                 </MDBox>
+                    <Footer />
             </DashboardLayout>
-        </Box>
     );
 };
 

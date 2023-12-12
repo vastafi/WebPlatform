@@ -5,6 +5,7 @@ const Message = function(message) {
     this.topic = message.topic;
     this.message = message.message;
     this.date = message.date;
+    this.device_id = message.device_id
 }
 
 Message.create = (newMessage, result) => {
@@ -73,6 +74,25 @@ Message.findBySensorId = (id, result) => {
         }
 
         console.log("message not found : sensor_id ", id);
+        result({kind : "not_found"}, null);
+    });
+};
+
+Message.findByDeviceId = (id, result) => {
+    sql.query(`SELECT * FROM messages_mqqt WHERE device_id = ${id}`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+
+        if (res.length) {
+            console.log("found messages: ", res);
+            result(null, res);
+            return;
+        }
+
+        console.log("message not found : device_id ", id);
         result({kind : "not_found"}, null);
     });
 };
