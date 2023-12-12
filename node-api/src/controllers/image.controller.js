@@ -1,24 +1,26 @@
-import Message from "../models/messages.model.js";
+import Image from "../models/image.model.js";
 
-const MessageController = function() {
+const ImageController = function() {
 
 }
 
-MessageController.create = (req, res) => {
+ImageController.create = (req, res) => {
     if (!req.body) {
         res.status(400).send({
             message: "Content can not be empty."
         });
     }
 
-    const message = new Message({
-        sensor_id: req.body.sensor_id,
+    const image = new Image({
+        mission_id: req.body.mission_id,
+        image_link: req.body.image_link,
+        image_file: req.body.image_file,
         topic: req.body.topic,
-        message: req.body.message,
+        coordinates: req.body.coordinates,
         date: req.body.date
     });
 
-    Message.create(message, (err, data) => {
+    Image.create(image, (err, data) => {
         if (err) {
             res.status(500).send({
                 message: err.message || "Some error in creating."
@@ -28,17 +30,17 @@ MessageController.create = (req, res) => {
     });
 };
 
-MessageController.findOne = (req, res) => {
-    Message.findById(req.params.id, (err, data) => {
+ImageController.findOne = (req, res) => {
+    Image.findById(req.params.id, (err, data) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found message with id ${req.params.id}.`
+                    message: `Not found image with id ${req.params.id}.`
                 });
             }
             else {
                 res.status(500).send({
-                    message: "Error retrieving message with id " + req.params.id
+                    message: "Error retrieving image with id " + req.params.id
                 });
             }
         }
@@ -46,17 +48,17 @@ MessageController.findOne = (req, res) => {
     });
 };
 
-MessageController.getByTopic = (req, res) => {
-    Message.findByTopic(req.body.topic, (err, data) => {
+ImageController.getByTopic = (req, res) => {
+    Image.findByTopic(req.body.topic, (err, data) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found messages with topic ${req.body.topic}.`
+                    message: `Not found images with topic ${req.body.topic}.`
                 });
             }
             else {
                 res.status(500).send({
-                    message: "Error retrieving messages with topic " + req.body.topic
+                    message: "Error retrieving images with topic " + req.body.topic
                 });
             }
         }
@@ -64,17 +66,17 @@ MessageController.getByTopic = (req, res) => {
     });
 };
 
-MessageController.getBySensorId = (req, res) => {
-    Message.findBySensorId(req.body.sensor_id, (err, data) => {
+ImageController.getByMissionId = (req, res) => {
+    Image.findByMissionId(req.body.mission_id, (err, data) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found message with sensor_id ${req.body.sensor_id}.`
+                    message: `Not found image with mission_id ${req.body.mission_id}.`
                 });
             }
             else {
                 res.status(500).send({
-                    message: "Error retrieving message with sensor_id " + req.body.sensor_id
+                    message: "Error retrieving image with mission_id " + req.body.mission_id
                 });
             }
         }
@@ -82,19 +84,19 @@ MessageController.getBySensorId = (req, res) => {
     });
 };
 
-MessageController.findAll = (req, res) => {
-    Message.getAll((err, data) => {
+ImageController.findAll = (req, res) => {
+    Image.getAll((err, data) => {
         if (err) {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving messages."
+                    err.message || "Some error occurred while retrieving images."
             });
         }
         else res.send(data);
     });
 };
 
-MessageController.update = (req, res) => {
+ImageController.update = (req, res) => {
     if (!req.body) {
         res.status(400).send({
             message: "Content can not be empty."
@@ -102,19 +104,19 @@ MessageController.update = (req, res) => {
     }
 
     console.log(req.body);
-    Message.updateById(
-        req.body.id,
-        new Message(req.body),
+    Image.updateById(
+        req.body.image_id,
+        new Image(req.body),
         (err, data) => {
             if (err) {
                 if (err.kind === "not_found") {
                     res.status(404).send({
-                        message: `Not found message with id ${req.body.id}.`
+                        message: `Not found image with id ${req.body.image_id}.`
                     });
                 }
                 else {
                     res.status(500).send({
-                        message: "Error retrieving message with id " + req.body.id
+                        message: "Error retrieving image with id " + req.body.image_id
                     });
                 }
             }
@@ -123,33 +125,33 @@ MessageController.update = (req, res) => {
     );
 };
 
-MessageController.delete = (req, res) => {
-    Message.remove(req.params.id, (err, data) => {
+ImageController.delete = (req, res) => {
+    Image.remove(req.params.id, (err, data) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found message with id ${req.params.id}.`
+                    message: `Not found image with id ${req.params.id}.`
                 });
             }
             else {
                 res.status(500).send({
-                    message: "Error retrieving message with id " + req.params.id
+                    message: "Error retrieving image with id " + req.params.id
                 });
             }
         }
-        else res.send({message: `Message was deleted successfully.`});
+        else res.send({message: `Image was deleted successfully.`});
     });
 };
 
-MessageController.deleteAll = (req, res) => {
-    Message.removeAll((err, data) => {
+ImageController.deleteAll = (req, res) => {
+    Image.removeAll((err, data) => {
         if (err) {
             res.status(500).send({
-                message: err.message || "Some error occurred while removing all messages."
+                message: err.message || "Some error occurred while removing all images."
             });
         }
-        else res.send({message: `All messages were deleted successfully.`});
+        else res.send({message: `All images were deleted successfully.`});
     });
 };
 
-export default MessageController;
+export default ImageController;
