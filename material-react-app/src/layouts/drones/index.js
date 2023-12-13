@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import { Autocomplete, TextField } from "@mui/material";
+import {Autocomplete, TextField} from "@mui/material";
 import {MapContainer, Marker, Polyline, Popup, TileLayer} from "react-leaflet";
 import Grid from "@mui/material/Grid";
-import { Carousel } from 'react-responsive-carousel';
+import {Carousel} from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import flower1 from '../../assets/images/dronesProject/flower1.jpg'
 import flower2 from '../../assets/images/dronesProject/flower2.jpg'
 import flower3 from '../../assets/images/dronesProject/flower3.jpg'
 import Battery from "../exampleProject1/battery";
 import mqtt from "mqtt";
-import { options } from "../../config/mqtt.config";
-import { host } from "../../config/mqtt.config";
+import {options} from "../../config/mqtt.config";
+import {host} from "../../config/mqtt.config";
 import DashboardNavbar from "../../examples/Navbars/DashboardNavbar";
 import Footer from "../../examples/Footer";
 import ReportsLineChart from "../../examples/Charts/LineCharts/ReportsLineChart";
@@ -44,20 +44,22 @@ const Drones = () => {
     const [battery, setBattery] = useState(0);
     const batteryTopic = 'microlab/automotive/device/drone/battery-1';
     const [messages, setMessages] = useState({});
-    const [count, setCount] = useState(4);
+    const [redLineCoordinates, setRedLineCoordinates] = useState([]);
+    const [totalFlowers, setTotalFlowers] = useState(0);
+    const [markerLocations, setMarkerLocations] = useState([]);
 
     async function getOptionsMission() {
         try {
             const responseDevices = await axios.get(`http://localhost:3001/api/devices/`);
             setOptionsMission((prevOptions) => ({
                 ...prevOptions,
-                devicesId: responseDevices.data.map((item) => ({ label: String(item.name) })),
+                devicesId: responseDevices.data.map((item) => ({label: String(item.name)})),
             }));
 
             const responseMission = await axios.get(`http://localhost:3001/api/missions/`);
             setOptionsMission((prevOptions) => ({
                 ...prevOptions,
-                missionsId: responseMission.data.map((item) => ({ label: String(item.mission_id) })),
+                missionsId: responseMission.data.map((item) => ({label: String(item.mission_id)})),
             }));
         } catch (error) {
             console.error(error);
@@ -82,6 +84,7 @@ const Drones = () => {
             return null;
         }
     }
+
     async function fetchMarkersForMissionId(missionId) {
         try {
             const response = await axios.get(`http://localhost:3001/api/missions/${missionId}`);
@@ -115,16 +118,6 @@ const Drones = () => {
 
                             const newCoordinates = mapInfo.coordinates || [];
                             setCoordinates(newCoordinates);
-
-                            if (newCoordinates.length >= 2) {
-                                setLines([
-                                    <Polyline
-                                        key="polyline"
-                                        positions={newCoordinates}
-                                        color="blue"
-                                    />
-                                ]);
-                            }
                         }
                     }
                 }
@@ -137,40 +130,52 @@ const Drones = () => {
     }, [droneMission.mission_id]);
 
     useEffect(() => {
-        const addMarkersToMap = async () => {
+        const addMarkersAndLineToMap = async () => {
             if (droneMission.mission_id) {
                 try {
                     const missionId = droneMission.mission_id;
                     const coordinates = await fetchMarkersForMissionId(missionId);
 
                     if (coordinates.length > 0) {
-                        setMarkers(
-                            coordinates.map((coord, index) => (
-                                <Marker key={index} position={[coord.lat, coord.lng]}>
-                                    <Popup>Location {index + 1}</Popup>
-                                </Marker>
-                            ))
-                        );
+                        const markers = coordinates.map((coord, index) => (
+                            <Marker key={index} position={[coord.lat, coord.lng]}>
+                                <Popup>Location {index + 1}</Popup>
+                            </Marker>
+                        ));
+
+                        setMarkers(markers);
+
+                        const lineCoords = coordinates.map(coord => [coord.lat, coord.lng]);
+                        setLines([
+                            <Polyline key="line-blue" positions={lineCoords} color="blue"/>,
+                        ]);
+
+                        const markerLocations = coordinates.map((coord, index) => ({
+                            label: `Location ${index + 1}`,
+                            position: [coord.lat, coord.lng],
+                        }));
+                        setMarkerLocations(markerLocations);
+
+                        let i = 0;
+                        const interval = setInterval(() => {
+                            if (i < coordinates.length) {
+                                const redLineCoords = coordinates.slice(0, i + 1).map(coord => [coord.lat, coord.lng]);
+                                setRedLineCoordinates([
+                                    <Polyline key="line-red" positions={redLineCoords} color="red"/>,
+                                ]);
+                                i++;
+                            } else {
+                                clearInterval(interval);
+                            }
+                        }, 5000);
                     }
                 } catch (error) {
                     console.error(error);
                 }
             }
         };
-        addMarkersToMap();
+        addMarkersAndLineToMap();
     }, [droneMission.mission_id]);
-
-    useEffect(() => {
-        if (coordinates.length >= 2 && coordinates[0] && coordinates[1]) {
-            setLines([
-                <Polyline
-                    key="polyline"
-                    positions={coordinates}
-                    color="blue"
-                />
-            ]);
-        }
-    }, [coordinates]);
 
     const changeHandleAutocomplete = (e, value) => {
         const name = e.target.id.split('-')[0]
@@ -180,7 +185,7 @@ const Drones = () => {
         });
     };
 
-    console.log(messages);
+    console.log('messages', messages)
     async function getMessages() {
         try {
             const requestFlowerNumbering = {
@@ -194,12 +199,16 @@ const Drones = () => {
 
             let shortResult = result.splice(result.length - 50, result.length);
 
+            const total = shortResult.reduce((accumulator, current) => {
+                const parsedMessage = JSON.parse(current.message);
+                return accumulator + parsedMessage.flowerNumbering;
+            }, 0);
+            setTotalFlowers(total);
+
             setMessages({
                 labels: shortResult.map(x => x.message_id),
                 datasets: { label: "Number of Flowers", data: shortResult.map(x => JSON.parse(x.message).flowerNumbering) },
             });
-            const resp = shortResult.map(x => JSON.parse(x.message).flowerNumbering);
-            setCount(resp[49] + " flowers");
         } catch (error) {
             console.error(error);
         }
@@ -253,128 +262,136 @@ const Drones = () => {
         }
     }, [client]);
 
-
     return (
-                <DashboardLayout marginLeft={274}>
-                    <DashboardNavbar />
-                <MDBox display="flex" flexDirection="row" mt={5} mb={3}>
-                    <MDBox
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="flex-start"
-                        width="100%"
-                        mr={2}
-                    >
-                        <MDBox mb={2} width="100%">
-                            <Autocomplete
-                                disablePortal
-                                options={optionsMission.devicesId}
-                                id="device_name"
-                                onChange={changeHandleAutocomplete}
-                                name="deviceName"
-                                clearIcon={null}
-                                renderInput={(params) => <TextField {...params} label="Device name" />}
-                            />
-                        </MDBox>
-                    </MDBox>
-                    <MDBox
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="flex-start"
-                        width="100%"
-                        ml={2}
-                    >
-                        <MDBox mb={0} width="100%">
-                            <Autocomplete
-                                options={optionsMission.missionsId}
-                                id="mission_id"
-                                onChange={changeHandleAutocomplete}
-                                renderInput={(params) => <TextField {...params} label="Mission id" />}
-                            />
-                        </MDBox>
-                    </MDBox>
-                    <MDBox
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="flex-start"
-                        width="100%"
-                        ml={2}
-                    >
-                        <MDBox mb={0} width="100%">
-                            <Battery percentage={battery} />
-                        </MDBox>
+        <DashboardLayout marginLeft={274}>
+            <DashboardNavbar/>
+            <MDBox display="flex" flexDirection="row" mt={5} mb={3}>
+                <MDBox
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="flex-start"
+                    width="100%"
+                    mr={2}
+                >
+                    <MDBox mb={2} width="100%">
+                        <Autocomplete
+                            disablePortal
+                            options={optionsMission.devicesId}
+                            id="device_name"
+                            onChange={changeHandleAutocomplete}
+                            name="deviceName"
+                            clearIcon={null}
+                            renderInput={(params) => <TextField {...params} label="Device name"/>}
+                        />
                     </MDBox>
                 </MDBox>
-                <MDBox display="flex" flexDirection="row" mt={5} mb={3}>
-                    <MDBox
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="flex-start"
-                        width="100%"
-                        mr={2}
-                    >
-                        <MDBox mb={2} width="100%">
-                            {mapCoordinates.center !== null && (
-                                <MapContainer
-                                    center={mapCoordinates.center}
-                                    zoom={mapCoordinates.zoom}
-                                    style={{ height: "350px", marginBottom: "20px", width: "100%" }}
-                                >
-                                    <TileLayer
-                                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                    />
-                                    {markers}
-                                    {lines}
-                                </MapContainer>
-                            )}
-                        </MDBox>
-                    </MDBox>
-                    <MDBox
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="flex-start"
-                        width="100%"
-                        mr={2}
-                    >
-                        <MDBox mb={2} width="100%">
-                            {mapCoordinates.center !== null && (
-                                <Grid container spacing={3}>
-                                    <Grid item xs={12} md={12} lg={12}>
-                                        <MDBox mb={3} height="350px" width="100%">
-                                            <Carousel showThumbs={false}>
-                                                {images.map((image, index) => (
-                                                    <div key={index}>
-                                                        <img src={image} alt={`Image ${index + 1}`} />
-                                                    </div>
-                                                ))}
-                                            </Carousel>
-                                        </MDBox>
-                                    </Grid>
-                                </Grid>)}
-                        </MDBox>
+                <MDBox
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="flex-start"
+                    width="100%"
+                    ml={2}
+                >
+                    <MDBox mb={0} width="100%">
+                        <Autocomplete
+                            options={optionsMission.missionsId}
+                            id="mission_id"
+                            onChange={changeHandleAutocomplete}
+                            renderInput={(params) => <TextField {...params} label="Mission id"/>}
+                        />
                     </MDBox>
                 </MDBox>
-                <MDBox>
+                <MDBox
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="flex-start"
+                    width="100%"
+                    ml={2}
+                >
+                    <MDBox mb={0} width="100%">
+                        <Battery percentage={battery}/>
+                    </MDBox>
+                </MDBox>
+            </MDBox>
+            <MDBox display="flex" flexDirection="row" mt={5} mb={3}>
+                <MDBox
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="flex-start"
+                    width="100%"
+                    mr={2}
+                >
+                    <MDBox mb={2} width="100%">
+                        {mapCoordinates.center !== null && (
+                            <MapContainer
+                                center={mapCoordinates.center}
+                                zoom={mapCoordinates.zoom}
+                                style={{height: "390px", marginBottom: "20px", width: "100%"}}
+                            >
+                                <TileLayer
+                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                />
+                                {lines}
+                                {redLineCoordinates}
+                                {markers}
+                            </MapContainer>
+                        )}
+                    </MDBox>
+                </MDBox>
+                <MDBox
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="flex-start"
+                    width="100%"
+                    mr={2}
+                >
+                    <MDBox mb={2} width="100%">
+                        {mapCoordinates.center !== null && (
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} md={12} lg={12}>
+                                    <MDBox mb={3} height="350px" width="100%">
+                                        <Carousel showThumbs={false}>
+                                            {images.map((image, index) => (
+                                                <div key={index}>
+                                                    <img src={image} alt={`Image ${index + 1}`}/>
+                                                </div>
+                                            ))}
+                                        </Carousel>
+                                    </MDBox>
+                                </Grid>
+                            </Grid>)}
+                    </MDBox>
+                </MDBox>
+            </MDBox>
+            <MDBox
+                display="flex"
+                flexDirection="column"
+                alignItems="flex-start"
+                width="100%"
+                mr={2}
+            >
+                <MDBox mb={2} width="100%">
                     <Grid container spacing={3}>
-                            <Grid item xs={12} md={12} lg={12}>
-                                <MDBox mb={3}>
-                                    <ReportsLineChart
-                                        color="success"
-                                        title="Number of Flowers"
-                                        description={
-                                            <>
-                                                Total number of flowers <strong>205</strong>.
-                                            </>
-                                        }
-                                        date="updated 4 min ago"
-                                        chart={messages}                                    />
-                                </MDBox>
-                            </Grid>
+                        <Grid item xs={12} md={12} lg={12}>
+                            <MDBox mb={3}>
+                                <ReportsLineChart
+                                    color="success"
+                                    title="Number of Flowers"
+                                    description={
+                                        <>
+                                            Total number of flowers <strong>{totalFlowers}</strong>.
+                                        </>
+                                    }
+                                    date="updated 4 min ago"
+                                    chart={messages}/>
+                            </MDBox>
+                        </Grid>
                     </Grid>
                 </MDBox>
-                    <Footer />
-            </DashboardLayout>
+            </MDBox>
+            <Footer/>
+        </DashboardLayout>
     );
 };
 
