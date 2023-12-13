@@ -50,6 +50,8 @@ import ExampleProject1 from "layouts/exampleProject1"
 import Devices from "layouts/devices";
 import Missions from "layouts/missions";
 import Sensors from "layouts/sensors";
+import CreateMap from "layouts/maps/CreateMap";
+import Iluminare from "layouts/iluminare";
 
 const routes = [
   // {
@@ -131,6 +133,14 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/Drones",
     component: <Drones />,
+  },
+  {
+    type: "collapse",
+    name: "Iluminare",
+    key: "Iluminare",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/layouts/iluminare",
+    component: <Iluminare />,
   },
 ];
 

@@ -135,9 +135,10 @@ function mqtt_subscribe(err, Topic) {
 
 
 // subscribe and publish to the same topic
-// client.subscribe('agrobot/sensors/#', mqtt_subscribe);
-// client.subscribe('microlab/agro/#', mqtt_subscribe);
+client.subscribe('agrobot/sensors/#', mqtt_subscribe);
+client.subscribe('microlab/agro/#', mqtt_subscribe);
 client.subscribe('microlab/automotive/#', mqtt_subscribe);
+client.subscribe('microlab/agro/light/intensity', mqtt_subscribe);
 
 function setTempInterval(tempTime){
   timeInterval = setInterval(function () {
