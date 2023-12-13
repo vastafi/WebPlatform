@@ -52,6 +52,8 @@ import Missions from "layouts/missions";
 import Sensors from "layouts/sensors";
 import CreateMap from "layouts/maps/CreateMap";
 import Iluminare from "layouts/iluminare";
+import ControlTemperatura from "layouts/controlTemperatura";
+
 
 const routes = [
   // {
@@ -141,6 +143,14 @@ const routes = [
     icon: <Icon fontSize="small">settings</Icon>,
     route: "/layouts/iluminare",
     component: <Iluminare />,
+  },
+  {
+    type: "collapse",
+    name: "ControlTemperatura",
+    key: "ControlTemperatura",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/ControlTemperatura",
+    component: <ControlTemperatura />,
   },
 ];
 
