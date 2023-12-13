@@ -15,7 +15,8 @@ MessageController.create = (req, res) => {
         sensor_id: req.body.sensor_id,
         topic: req.body.topic,
         message: req.body.message,
-        date: req.body.date
+        date: req.body.date,
+        device_id: req.body.device_id
     });
 
     Message.create(message, (err, data) => {
@@ -75,6 +76,24 @@ MessageController.getBySensorId = (req, res) => {
             else {
                 res.status(500).send({
                     message: "Error retrieving message with sensor_id " + req.body.sensor_id
+                });
+            }
+        }
+        else res.send(data);
+    });
+};
+
+MessageController.getByDeviceId = (req, res) => {
+    Message.findByDeviceId(req.body.device_id, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found message with sensor_id ${req.body.device_id}.`
+                });
+            }
+            else {
+                res.status(500).send({
+                    message: "Error retrieving message with device_id " + req.body.device_id
                 });
             }
         }
