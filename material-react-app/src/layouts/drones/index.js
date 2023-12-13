@@ -17,6 +17,7 @@ import {host} from "../../config/mqtt.config";
 import DashboardNavbar from "../../examples/Navbars/DashboardNavbar";
 import Footer from "../../examples/Footer";
 import ReportsLineChart from "../../examples/Charts/LineCharts/ReportsLineChart";
+import MDButton from "../../components/MDButton";
 
 const Drones = () => {
     const [optionsMission, setOptionsMission] = useState({
@@ -262,6 +263,23 @@ const Drones = () => {
         }
     }, [client]);
 
+    const startMission = async () => {
+        try {
+            if (client && droneMission.mission_id) {
+                const missionId = droneMission.mission_id;
+                const coordinates = await fetchMarkersForMissionId(missionId);
+
+                if (coordinates.length > 0) {
+                    const payload = JSON.stringify({ missionId, coordinates });
+                    client.publish('microlab/automotive/device/drone/startMission-1', payload);
+                    console.log('Coordinates sent:', payload);
+                }
+            }
+        } catch (error) {
+            console.error('Error while starting mission:', error);
+        }
+    };
+
     return (
         <DashboardLayout marginLeft={274}>
             <DashboardNavbar/>
@@ -310,6 +328,19 @@ const Drones = () => {
                 >
                     <MDBox mb={0} width="100%">
                         <Battery percentage={battery}/>
+                    </MDBox>
+                </MDBox>
+                <MDBox
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="flex-start"
+                    width="100%"
+                    ml={2}
+                >
+                    <MDBox mb={0} width="100%">
+                        <MDButton variant="gradient" color="info" fullWidth type="submit" onClick={(e) => startMission(e)}>
+                        Start Mission
+                        </MDButton>
                     </MDBox>
                 </MDBox>
             </MDBox>
