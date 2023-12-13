@@ -51,14 +51,14 @@ import Missions from "layouts/missions";
 import Sensors from "layouts/sensors";
 
 const routes = [
-  {
-    type: "examples",
-    name: "User Profile",
-    key: "user-profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/user-profile",
-    component: <UserProfile />,
-  },
+  // {
+  //   type: "examples",
+  //   name: "User Profile",
+  //   key: "user-profile",
+  //   icon: <Icon fontSize="small">person</Icon>,
+  //   route: "/user-profile",
+  //   component: <UserProfile />,
+  // },
   {
     type: "collapse",
     name: "Dashboard",
