@@ -53,6 +53,7 @@ import Sensors from "layouts/sensors";
 import CreateMap from "layouts/maps/CreateMap";
 import Iluminare from "layouts/iluminare";
 import ControlTemperatura from "layouts/controlTemperatura";
+import Valentina from "layouts/Valentina/Valentina";
 
 
 const routes = [
@@ -87,6 +88,14 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/Users",
     component: <Users />,
+  },
+  {
+    type: "collapse",
+    name: "Valentina",
+    key: "Users",
+    icon: <Icon fontSize="small">dashboard</Icon>,
+    route: "/Valentina",
+    component: <Valentina />,
   },
   {
     type: "collapse",
