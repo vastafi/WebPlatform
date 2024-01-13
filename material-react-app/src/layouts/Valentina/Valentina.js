@@ -11,7 +11,7 @@ const Valentina = () => {
     const { sales, tasks } = reportsLineChartData;
     const numberOfLabels = 20;
 
-const data = Array.from({ length: numberOfLabels }, () => Math.floor(Math.random() * 101));
+    const data = Array.from({ length: numberOfLabels }, () => Math.floor(Math.random() * 101));
 
     const [tempData, setTempData] = useState({
         labels: ["label1", "label2", "label3", "label4", "label5", "label6", "label7", "label8", "label9", "label10", "label11", "label12", "label13", "label14", "label15", "label16", "label17", "label18", "label19", "label20"],
@@ -25,20 +25,20 @@ const data = Array.from({ length: numberOfLabels }, () => Math.floor(Math.random
     })
 
 
-const options = {
-    plugins: {
-        legend: false
+    const options = {
+        plugins: {
+            legend: false
+        },
     }
-}
 
     return (
 
 
         <Box sx={{ position: "relative", height: "100vh" }}>
-            <DashboardLayout>
+            <DashboardLayout marginLeft={274}>
                 <MDBox mb={2} />
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", rowGap: "50px" }}>
-                    <div style={{ width: "1200px" }}>
+                <div style={{ display: "flex", justifyContent: "center", columnGap: "50px" }}>
+                    <div style={{ width: "450px" }}>
                         <MDBox mb={3}>
                             <ReportsLineChart
                                 color="success"
@@ -46,10 +46,10 @@ const options = {
                             />
                         </MDBox>
                     </div>
-                    <div style={{ width: "1200px" }}>
+                    <div style={{ width: "450px" }}>
                         <Bar data={tempData} />
                     </div>
-                    <div style={{ width: "1200px" }}>
+                    <div style={{ width: "450px" }}>
                         <Line data={tempData} options={options} />
                     </div>
                 </div>
