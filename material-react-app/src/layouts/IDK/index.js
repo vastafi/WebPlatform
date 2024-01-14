@@ -33,7 +33,7 @@ const IDK = () => {
       data: data,
       pointBorderColor: "transparent",
       pointStyle: false,
-      tension: 0.1,
+      tension: 0.2,
       fill: true
     }]
   })
