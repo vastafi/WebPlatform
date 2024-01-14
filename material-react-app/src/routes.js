@@ -53,7 +53,10 @@ import Sensors from "layouts/sensors";
 import CreateMap from "layouts/maps/CreateMap";
 import Iluminare from "layouts/iluminare";
 import ControlTemperatura from "layouts/controlTemperatura";
+import Temperatura from "layouts/Temperatura";
+import Puls from "layouts/Puls";
 import Valentina from "layouts/Valentina/Valentina";
+import IDK from "layouts/IDK";
 
 
 const routes = [
@@ -129,38 +132,62 @@ const routes = [
     type: "title",
     title: "Projects",
   },
+  // {
+  //   type: "collapse",
+  //   name: "ExampleProject1",
+  //   key: "ExampleProject1",
+  //   icon: <Icon fontSize="small">settings</Icon>,
+  //   route: "/ExampleProject1",
+  //   component: <ExampleProject1 />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Drones",
+  //   key: "Drones",
+  //   icon: <Icon fontSize="small">dashboard</Icon>,
+  //   route: "/Drones",
+  //   component: <Drones />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Iluminare",
+  //   key: "Iluminare",
+  //   icon: <Icon fontSize="small">settings</Icon>,
+  //   route: "/layouts/iluminare",
+  //   component: <Iluminare />,
+  // },
   {
     type: "collapse",
-    name: "ExampleProject1",
-    key: "ExampleProject1",
+    name: "Puls",
+    key: "Puls",
     icon: <Icon fontSize="small">settings</Icon>,
-    route: "/ExampleProject1",
-    component: <ExampleProject1 />,
+    route: "/Puls",
+    component: <Puls />,
   },
   {
     type: "collapse",
-    name: "Drones",
-    key: "Drones",
-    icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/Drones",
-    component: <Drones />,
-  },
-  {
-    type: "collapse",
-    name: "Iluminare",
-    key: "Iluminare",
+    name: "Temperatura",
+    key: "Temperatura",
     icon: <Icon fontSize="small">settings</Icon>,
-    route: "/layouts/iluminare",
-    component: <Iluminare />,
+    route: "/Temperatura",
+    component: <Temperatura />,
   },
   {
     type: "collapse",
-    name: "ControlTemperatura",
-    key: "ControlTemperatura",
+    name: "Am uitat",
+    key: "IDK",
     icon: <Icon fontSize="small">settings</Icon>,
-    route: "/ControlTemperatura",
-    component: <ControlTemperatura />,
+    route: "/IDK",
+    component: <IDK />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "ControlTemperatura",
+  //   key: "ControlTemperatura",
+  //   icon: <Icon fontSize="small">settings</Icon>,
+  //   route: "/ControlTemperatura",
+  //   component: <ControlTemperatura />,
+  // },
 ];
 
 export default routes;

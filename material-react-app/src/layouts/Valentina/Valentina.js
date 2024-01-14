@@ -24,6 +24,7 @@ const Valentina = () => {
         }]
     })
 
+    ChartJS.defaults.backgroundColor = 'yellow';
 
     const options = {
         plugins: {
