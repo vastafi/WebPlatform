@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "faker": "^6.6.6"
+    "faker": "^6.6.6",
+    "node": "^18.18.0"
   }
 }

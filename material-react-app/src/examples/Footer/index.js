@@ -66,12 +66,12 @@ function Footer({ company, links }) {
             favorite
           </Icon>
         </MDBox>
-        by
+        {/* by
         <Link href={href} target="_blank">
           <MDTypography variant="button" fontWeight="medium">
             &nbsp;{name}&nbsp;
           </MDTypography>
-        </Link>
+        </Link> */}
         for IOT projects.
       </MDBox>
       <MDBox
@@ -99,10 +99,9 @@ function Footer({ company, links }) {
 
 // Setting default values for the props of Footer
 Footer.defaultProps = {
-  company: { href: "https://www.microlab.club/", name: "Microlab" },
+  company: { href: "#", name: "" },
   links: [    
-    { href: "https://www.facebook.com/MicrolabClub/", name: "Microlab on Facebook" },
-    { href: "https://www.microlab.club/microlabacademy", name: "About Us" },
+    { href: "#", name: "About Us" },
   ],
 };
 

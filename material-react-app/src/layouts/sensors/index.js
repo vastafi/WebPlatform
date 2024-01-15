@@ -82,7 +82,7 @@ const Sensors = () => {
     <Box sx={{position: "relative", height: "100vh"}}>
       <DashboardLayout>
         <MDBox mb={2} />
-        <Tables rowsData={rows} name={{name: "Users", nameBtn: "New Sensor", route: "/CreateSensor"}} columns={columns}/>
+        <Tables rowsData={rows} name={{name: "Sensors", nameBtn: "New Sensor", route: "/CreateSensor"}} columns={columns}/>
         </DashboardLayout>
     </Box>
   );

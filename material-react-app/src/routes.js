@@ -42,32 +42,18 @@ import Dashboard from "layouts/dashboard";
 import UserProfile from "layouts/user-profile";
 import Maps from "layouts/maps";
 
-
 import Icon from "@mui/material/Icon";
 import Users from "layouts/users";
-import Drones from "./layouts/drones";
-import ExampleProject1 from "layouts/exampleProject1"
 import Devices from "layouts/devices";
 import Missions from "layouts/missions";
 import Sensors from "layouts/sensors";
-import CreateMap from "layouts/maps/CreateMap";
-import Iluminare from "layouts/iluminare";
-import ControlTemperatura from "layouts/controlTemperatura";
-import Temperatura from "layouts/Temperatura";
-import Puls from "layouts/Puls";
-import Valentina from "layouts/Valentina/Valentina";
-import IDK from "layouts/IDK";
-
+import Temperature from "layouts/Temperature";
+import Heartbeats from "layouts/Heartbeats";
+import OxygenLevel from "layouts/OxygenLevel";
+import ECG from "layouts/ECG";
 
 const routes = [
-  // {
-  //   type: "examples",
-  //   name: "User Profile",
-  //   key: "user-profile",
-  //   icon: <Icon fontSize="small">person</Icon>,
-  //   route: "/user-profile",
-  //   component: <UserProfile />,
-  // },
+ 
   {
     type: "collapse",
     name: "Dashboard",
@@ -94,20 +80,13 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Valentina",
-    key: "Users",
-    icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/Valentina",
-    component: <Valentina />,
-  },
-  {
-    type: "collapse",
     name: "Devices",
     key: "Devices",
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/Devices",
     component: <Devices />,
   },
+
   {
     type: "collapse",
     name: "Missions",
@@ -127,67 +106,44 @@ const routes = [
   {
     type: "divider",
   },
-
   {
     type: "title",
     title: "Projects",
   },
-  // {
-  //   type: "collapse",
-  //   name: "ExampleProject1",
-  //   key: "ExampleProject1",
-  //   icon: <Icon fontSize="small">settings</Icon>,
-  //   route: "/ExampleProject1",
-  //   component: <ExampleProject1 />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Drones",
-  //   key: "Drones",
-  //   icon: <Icon fontSize="small">dashboard</Icon>,
-  //   route: "/Drones",
-  //   component: <Drones />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Iluminare",
-  //   key: "Iluminare",
-  //   icon: <Icon fontSize="small">settings</Icon>,
-  //   route: "/layouts/iluminare",
-  //   component: <Iluminare />,
-  // },
   {
     type: "collapse",
-    name: "Puls",
-    key: "Puls",
+    name: "Heartbeats",
+    key: "Heartbeats",
     icon: <Icon fontSize="small">settings</Icon>,
-    route: "/Puls",
-    component: <Puls />,
+    route: "/heartbeats",
+    component: <Heartbeats />,
   },
   {
     type: "collapse",
-    name: "Temperatura",
-    key: "Temperatura",
+    name: "Temperature",
+    key: "Temperature",
     icon: <Icon fontSize="small">settings</Icon>,
-    route: "/Temperatura",
-    component: <Temperatura />,
+    route: "/temperature",
+    component: <Temperature />,
   },
   {
     type: "collapse",
-    name: "Am uitat",
-    key: "IDK",
+    name: "Oxygen level",
+    key: "Oxygen level",
     icon: <Icon fontSize="small">settings</Icon>,
-    route: "/IDK",
-    component: <IDK />,
+    route: "/oxygenLevel",
+    component: <OxygenLevel />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "ControlTemperatura",
-  //   key: "ControlTemperatura",
-  //   icon: <Icon fontSize="small">settings</Icon>,
-  //   route: "/ControlTemperatura",
-  //   component: <ControlTemperatura />,
-  // },
+  {
+    type: "collapse",
+    name: "Electrocardiogram",
+    key: "Electrocardiogram",
+    icon: <Icon fontSize="small">settings</Icon>,
+    route: "/electrocardiogram",
+    component: <ECG />,
+  },
+
+
 ];
 
 export default routes;

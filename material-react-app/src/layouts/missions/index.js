@@ -108,7 +108,7 @@ const Missions = () => {
     <Box sx={{position: "relative", height: "100vh"}}>
       <DashboardLayout>
         <MDBox mb={2} />
-        <Tables rowsData={rows} name={{name: "Devices", nameBtn: "New Mission", route: "/CreateMission"}} columns={columns} func={setToggleForm}/>
+        <Tables rowsData={rows} name={{name: "Mission", nameBtn: "New Mission", route: "/CreateMission"}} columns={columns} func={setToggleForm}/>
         </DashboardLayout>
     </Box>
   );
