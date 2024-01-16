@@ -27,45 +27,35 @@ const Temperature = () => {
 
   const [messages, setMessages] = useState({});
   const [count, setCount] = useState(4);
-  const [tempData, setTempData] = useState({
-    labels: ["Luni", "Marti", "Miercuri", "Joi", "Vineri", "Simbata", "Duminica"],
-    datasets: [{
-      label: "Temperature",
-      data: data,
-      pointBorderColor: "transparent",
-      pointStyle: false,
-      tension: 0.1
-    }]
-  })
+  
   console.log(messages);
 
   async function getMessages() {
     try {
       const requestBodyControlTemperatura = {
-        "topic": "microlab/agro/air/temperature"
+        "topic": "hearth/device/smart_watch/temp"
       };
       const response = await axios.post('http://localhost:3001/api/messages/getByTopic', requestBodyControlTemperatura);
       let result = response.data;
       console.log(result.length);
 
       let shortResult = result.splice(result.length - 20, result.length);
-
-      const parsedLabels = shortResult.map(x => {
-        const seconds = moment(x.date).get('seconds');
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-      });
       setMessages({
-        labels: parsedLabels,
-        datasets: { label: "Temperature", data: shortResult.map(x => JSON.parse(x.message).temperature) },
-      });
+        labels: shortResult.map(x=> x.message_id),
+        datasets:
+            {
+                label: "temp_c",
+                data: shortResult.map(x => JSON.parse(x.message).temp_c),
+            }
+    });
 
-      const resp = shortResult.map(x => JSON.parse(x.message).temp);
-      setCount(resp[49] + "%");
-    } catch (error) {
-      console.error(error);
-    }
+    const resp = shortResult.map(x=> JSON.parse(x.message).temp_c);
+    setCount(resp[49] + "%");
+} catch (error) {
+    console.error(error);
+}
+
+
   }
 
   useEffect(() => {
@@ -84,10 +74,10 @@ const Temperature = () => {
 
   function setMqttData() {
     try {
-      let publishSettings = JSON.stringify({ 'tempTime': settingsTempTime });
-      console.log(publishSettings);
+      let publishSettings = JSON.stringify({ 'set_point': settingsTempTime });
+            console.log(publishSettings);
 
-      let result = client.publish('microlab/agro/device/ventilation/settings', publishSettings);
+      let result = client.publish('hearth/device/smart_watch/temp', publishSettings);
       console.log(result);
     } catch (error) {
       console.error(error);
@@ -96,20 +86,16 @@ const Temperature = () => {
 
   const changeTempSettingsHandler = (e) => {
     setSettingsTempTime(e.target.value);
+    setPointSettings(e.target.value);
   };
-  // const changeHandler = (e) => {
-  //   setSettings(e.target.value);
-  // };
-
-
-
+  
   /* MQTT */
   const [client, setClient] = useState(null);
   const [connectStatus, setConnectStatus] = useState(null);
 
-  const [temp, setTemp] = useState(0);
+  const [temperature, setTemp] = useState(0);
 
-  const tempTopic = 'microlab/agro/air/temperature';
+  const tempTopic = 'hearth/device/smart_watch/temp_c';
 
 
   const mqttConnect = () => {
@@ -160,12 +146,12 @@ const Temperature = () => {
                 color="primary"
                 icon="thermostat"
                 title="Temperature"
-                count={temp}
-              // percentage={{
-              //   color: "success",
-              //   amount: "+1",
-              //   label: "difference",
-              // }}
+                count={count}
+                percentage={{
+                color: "success",
+                amount: "+1",
+                label: "difference",
+                }}
               />
             </MDBox>
           </Grid>
@@ -185,14 +171,7 @@ const Temperature = () => {
 
             <MDBox mb={1.5}>
               <MDBox mb={2}>
-                <MDInput
-                  type="text"
-                  label="Temp time (sec)"
-                  fullWidth
-                  value={settingsTempTime}
-                  name="settingsTempTime"
-                  onChange={changeTempSettingsHandler}
-                />
+               
               </MDBox>
 
             </MDBox>
@@ -204,7 +183,7 @@ const Temperature = () => {
               <MDTypography > MQTT status : {connectStatus}</MDTypography>
             </MDBox>
             <MDBox mb={1.5}>
-              <MDTypography > Current Settings :</MDTypography>
+              <MDTypography > Current Settings : </MDTypography>
               <MDTypography > Temperature time :{settingsTempTime}</MDTypography>
             </MDBox>
 
@@ -213,12 +192,16 @@ const Temperature = () => {
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
 
-              <Box width="100%">
-                  <div style={{height:"200px"}}>
-                    <Bar data={tempData} options={options} plugins={[options.plugin]}/>
-                  </div>
-              </Box>
-
+          <Grid item xs={12} md={12} lg={12}>
+                            <MDBox mb={3}>
+                                <ReportsLineChart
+                                    color="success"
+                                    title="Temperature Chart"
+                                    chart={messages}
+                                    date={"just updated"}
+                                />
+                            </MDBox>
+                        </Grid>
           </Grid>
         </MDBox>
 
