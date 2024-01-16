@@ -1,27 +1,47 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
 import MDBox from "components/MDBox";
 import Footer from "examples/Footer";
+import { useEffect, useState } from "react";
+
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 
 import Grid from "@mui/material/Grid";
+import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
-import MDInput from "components/MDInput";
-import { Bar } from 'react-chartjs-2';
-import { Box } from "@mui/material";
-import { Chart as ChartJS, plugins } from "chart.js/auto"
 
-import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import MDButton from "components/MDButton";
+import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 
 
+import MDTypography from "components/MDTypography";
 import mqtt from "mqtt";
 import { host } from "../../config/mqtt.config";
-import MDTypography from "components/MDTypography";
-import moment from 'moment';
-import {options, data} from "./temp"
+import { options } from "./temp";
+
+function createData(
+  name: String,
+  t1: String,
+) {
+  return { name, t1};
+}
+
+const rows = [
+  createData('36,5 °C – 37,4 °C','Normal temperature'),
+  createData('37,5 °C – 38,0 °C', 'Subfebrile Temperature'),
+  createData('38,1 °C – 38,5 °C', 'Mild fever'),
+  createData('38,6 °C – 39,0 °C', 'Moderate fever'),
+  createData('39,1 °C – 39,9 °C', 'High fever'),
+  createData('40,0 °C – 42,0 °C', 'Very high fever'),
+];
+
 
 const Temperature = () => {
 
@@ -54,7 +74,6 @@ const Temperature = () => {
 } catch (error) {
     console.error(error);
 }
-
 
   }
 
@@ -132,7 +151,7 @@ const Temperature = () => {
           setTemp(JSON.parse(message.toString()).temperature);
         }
         console.log(message.toString());
-        
+
         if (topic === tempTopic1) {
           setTemp(JSON.parse(message.toString()).temperature);
         }
@@ -191,7 +210,7 @@ const Temperature = () => {
             </MDBox>
             <MDBox mb={1.5}>
               <MDTypography > Current Settings : </MDTypography>
-              <MDTypography > Temperature time :{settingsTempTime}</MDTypography>
+              <MDTypography > Temperature time : {settingsTempTime}</MDTypography>
             </MDBox>
 
           </Grid>
@@ -228,7 +247,29 @@ const Temperature = () => {
           </Grid>
         </MDBox>
       </MDBox>
-      <Footer />
+     <b> Body temperature: normal range and deviations</b>
+      <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Temperature range</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow
+              key={row.name}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">{row.name} </TableCell>
+             <TableCell component="th" scope="row" >{row.t1}</TableCell>
+              
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      </TableContainer>
+     <Footer />
     </DashboardLayout>
   );
 };

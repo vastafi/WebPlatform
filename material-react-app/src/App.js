@@ -47,7 +47,7 @@ import UpdateDevice from "layouts/devices/UpdateDevice";
 import CreateMission from "layouts/missions/CreateMission";
 import UpdateMission from "layouts/missions/UpdateMission";
 import CreateSensor from "layouts/sensors/CreateSensor";
-import UpdateSensor from "layouts/sensors/UpdateSensor";
+import UpdateSensor from "layouts/sensors/UpdateSensor"
 
 export default function App() {
   const authContext = useContext(AuthContext);
