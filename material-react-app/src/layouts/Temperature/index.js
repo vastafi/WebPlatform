@@ -96,7 +96,7 @@ const Temperature = () => {
   const [temperature, setTemp] = useState(0);
 
   const tempTopic = 'hearth/device/smart_watch/temp_c';
-
+  const tempTopic1 = 'hearth/device/smart_watch/temp_f';
 
   const mqttConnect = () => {
     setConnectStatus('Connecting');
@@ -115,6 +115,8 @@ const Temperature = () => {
         setConnectStatus('Connected');
 
         client.subscribe(tempTopic);
+        client.subscribe(tempTopic1);
+
       });
       client.on('error', (err) => {
         console.error('Connection error: ', err);
@@ -127,6 +129,11 @@ const Temperature = () => {
         setConnectStatus('Message received');
 
         if (topic === tempTopic) {
+          setTemp(JSON.parse(message.toString()).temperature);
+        }
+        console.log(message.toString());
+        
+        if (topic === tempTopic1) {
           setTemp(JSON.parse(message.toString()).temperature);
         }
         console.log(message.toString());
@@ -196,7 +203,7 @@ const Temperature = () => {
                             <MDBox mb={3}>
                                 <ReportsLineChart
                                     color="success"
-                                    title="Temperature Chart"
+                                    title="Temperature Chart Celsius °C"
                                     chart={messages}
                                     date={"just updated"}
                                 />
@@ -205,6 +212,21 @@ const Temperature = () => {
           </Grid>
         </MDBox>
 
+        <MDBox mt={4.5}>
+          <Grid container spacing={3}>
+
+          <Grid item xs={12} md={12} lg={12}>
+                            <MDBox mb={3}>
+                                <ReportsLineChart
+                                    color="success"
+                                    title="Temperature Chart Fahrenheit °F"
+                                    chart={messages}
+                                    date={"just updated"}
+                                />
+                            </MDBox>
+                        </Grid>
+          </Grid>
+        </MDBox>
       </MDBox>
       <Footer />
     </DashboardLayout>
