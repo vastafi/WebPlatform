@@ -42,7 +42,7 @@ const ECG = () => {
   async function getMessages() {
     try {
       const requestBodyControlTemperatura = {
-        "topic": "microlab/agro/air/temperature"
+        "topic": "hearth/device/smart_watch/ecg"
       };
       const response = await axios.post('http://localhost:3001/api/messages/getByTopic', requestBodyControlTemperatura);
       let result = response.data;
@@ -87,7 +87,7 @@ const ECG = () => {
       let publishSettings = JSON.stringify({ 'tempTime': settingsTempTime });
       console.log(publishSettings);
 
-      let result = client.publish('microlab/agro/device/ventilation/settings', publishSettings);
+      let result = client.publish('hearth/device/smart_watch/ecg/settings', publishSettings);
       console.log(result);
     } catch (error) {
       console.error(error);
@@ -104,7 +104,7 @@ const ECG = () => {
 
   const [temp, setTemp] = useState(0);
 
-  const tempTopic = 'microlab/agro/air/temperature';
+  const tempTopic = 'hearth/device/smart_watch/ecg';
 
 
   const mqttConnect = () => {

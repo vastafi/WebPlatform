@@ -83,10 +83,10 @@ export default function data() {
         members: (
           <MDBox display="flex" py={1}>
             {avatars([
-              [team1, "Ryan Tompson"],
-              [team2, "Romina Hadid"],
-              [team3, "Alexander Smith"],
-              [team4, "Jessica Doe"],
+              [team1, "Andrei Vasile"],
+              [team2, "Bandalac Ion"],
+              [team3, "Alexandru Bradu"],
+              [team4, "Vitalie Răileanu"],
             ])}
           </MDBox>
         ),
@@ -106,8 +106,8 @@ export default function data() {
         members: (
           <MDBox display="flex" py={1}>
             {avatars([
-              [team2, "Romina Hadid"],
-              [team4, "Jessica Doe"],
+              [team2, "Ana-Maria Ambros"],
+              [team4, "Felix Mihai"],
             ])}
           </MDBox>
         ),
@@ -127,8 +127,8 @@ export default function data() {
         members: (
           <MDBox display="flex" py={1}>
             {avatars([
-              [team1, "Ryan Tompson"],
-              [team3, "Alexander Smith"],
+              [team1, "Morari Ion"],
+              [team3, "Ambros Petru"],
             ])}
           </MDBox>
         ),
@@ -148,10 +148,10 @@ export default function data() {
         members: (
           <MDBox display="flex" py={1}>
             {avatars([
-              [team4, "Jessica Doe"],
-              [team3, "Alexander Smith"],
-              [team2, "Romina Hadid"],
-              [team1, "Ryan Tompson"],
+              [team4, "Romina Ion"],
+              [team3, "Vasile Petru"],
+              [team2, "Aurel Zgureanu"],
+              [team1, "Moraru Vitalie"],
             ])}
           </MDBox>
         ),
@@ -170,7 +170,7 @@ export default function data() {
         companies: <Company image={logoJira} name="Add the New Pricing Page" />,
         members: (
           <MDBox display="flex" py={1}>
-            {avatars([[team4, "Jessica Doe"]])}
+            {avatars([[team4, "Romina Ion"]])}
           </MDBox>
         ),
         budget: (
@@ -189,8 +189,8 @@ export default function data() {
         members: (
           <MDBox display="flex" py={1}>
             {avatars([
-              [team1, "Ryan Tompson"],
-              [team4, "Jessica Doe"],
+              [team1, "Moraru Vasile"],
+              [team4, "Romina Ion"],
             ])}
           </MDBox>
         ),

@@ -47,12 +47,12 @@ function Dashboard() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="dark"
-                icon="weekend"
-                title="Bookings"
-                count={281}
+                icon=""
+                title="Projects"
+                count={4}
                 percentage={{
                   color: "success",
-                  amount: "+55%",
+                  amount: "+2%",
                   label: "than lask week",
                 }}
               />
@@ -63,7 +63,7 @@ function Dashboard() {
               <ComplexStatisticsCard
                 icon="leaderboard"
                 title="Today's Users"
-                count="2,300"
+                count="6"
                 percentage={{
                   color: "success",
                   amount: "+3%",
@@ -78,11 +78,11 @@ function Dashboard() {
                 color="success"
                 icon="store"
                 title="Revenue"
-                count="34k"
+                count="0k"
                 percentage={{
                   color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
+                  amount: "0%",
+                  label: "today",
                 }}
               />
             </MDBox>
@@ -93,7 +93,7 @@ function Dashboard() {
                 color="primary"
                 icon="person_add"
                 title="Followers"
-                count="+91"
+                count="+1"
                 percentage={{
                   color: "success",
                   amount: "",
@@ -110,7 +110,7 @@ function Dashboard() {
                 <ReportsBarChart
                   color="info"
                   title="website views"
-                  description="Last Campaign Performance"
+                  description="Last Performance"
                   date="campaign sent 2 days ago"
                   chart={reportsBarChartData}
                 />
@@ -120,10 +120,10 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="success"
-                  title="daily sales"
+                  title="daily acces"
                   description={
                     <>
-                      (<strong>+15%</strong>) increase in today sales.
+                      (<strong>+12%</strong>) increase today.
                     </>
                   }
                   date="updated 4 min ago"
@@ -136,7 +136,7 @@ function Dashboard() {
                 <ReportsLineChart
                   color="dark"
                   title="completed tasks"
-                  description="Last Campaign Performance"
+                  description="Last Performance"
                   date="just updated"
                   chart={tasks}
                 />
