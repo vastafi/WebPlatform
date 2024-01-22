@@ -3,6 +3,13 @@ import axios from "axios";
 import MDBox from "components/MDBox";
 import Footer from "examples/Footer";
 
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 import Grid from "@mui/material/Grid";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -22,10 +29,26 @@ import MDTypography from "components/MDTypography";
 import moment from 'moment';
 import {options, data} from "./temp"
 
+function createData(
+  name,
+  t1,
+) {
+  return { name, t1};
+}
+
+const rows = [
+  createData('95% - 100%','Normal oxygen saturation level. Indicates that the body is getting enough oxygen.'),
+  createData('91% - 94%', 'Slightly below normal levels. Might be acceptable depending on the individual and contextual factors such as high altitude.'),
+  createData('86% - 90%', 'Mild hypoxemia. Lower than normal levels, may require supplemental oxygen or medical attention, especially if symptoms are present or if levels persist in this range.'),
+  createData('81% - 85%', 'Moderate hypoxemia. This range is concerning and may impact body function. Medical evaluation and intervention are typically required.'),
+  createData('80% and below', 'Severe hypoxemia. This is a critical condition and requires immediate medical intervention. Low oxygen levels can impair organ function and can be life-threatening.'),
+];
+
 const OxygenLevel= () => {
 
   const [messages, setMessages] = useState({});
-  const [count, setCount] = useState(4);
+  const [count, setCount] = useState(98);
+
   const [tempData, setTempData] = useState({
     labels: ["1", "2", "3", "4", "5", "6", "7","8", "9", "10", "11", "2", "13", "14","15", "16", "17", "18", "19", "20", "21"],
     datasets: [{
@@ -48,7 +71,7 @@ const OxygenLevel= () => {
       let result = response.data;
       console.log(result.length);
 
-      let shortResult = result.splice(result.length - 20, result.length);
+      let shortResult = result.splice(result.length - 10, result.length);
 
       const parsedLabels = shortResult.map(x => {
         const seconds = moment(x.date).get('seconds');
@@ -160,12 +183,12 @@ const OxygenLevel= () => {
                 color="primary"
                 icon="percent"
                 title="Oxygen level"
-                count={temp}
-              // percentage={{
-              //   color: "success",
-              //   amount: "+1",
-              //   label: "difference",
-              // }}
+                count={count}
+              percentage={{
+                color: "success",
+                amount: "+1",
+                label: "difference",
+              }}
               />
             </MDBox>
           </Grid>
@@ -223,6 +246,29 @@ const OxygenLevel= () => {
         </MDBox>
 
       </MDBox>
+      <b> Oxygen Level (SpO2)</b>
+      <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Oxygen Level</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow
+              key={row.name}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">{row.name} </TableCell>
+             <TableCell component="th" scope="row" >{row.t1}</TableCell>
+              
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      </TableContainer>
+      <br></br>
       <Footer />
     </DashboardLayout>
   );

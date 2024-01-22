@@ -46,7 +46,7 @@ const rows = [
 const Temperature = () => {
 
   const [messages, setMessages] = useState({});
-  const [count, setCount] = useState(4);
+  const [count, setCount] = useState(35);
   
   console.log(messages);
 
@@ -264,6 +264,7 @@ return (
         </TableBody>
       </Table>
       </TableContainer>
+      <br></br>
      <Footer />
     </DashboardLayout>
   );
