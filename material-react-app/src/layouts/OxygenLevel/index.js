@@ -47,7 +47,7 @@ const rows = [
 const OxygenLevel= () => {
 
   const [messages, setMessages] = useState({});
-  const [count, setCount] = useState(98);
+  const [count, setCount] = useState(81);
 
   const [tempData, setTempData] = useState({
     labels: ["1", "2", "3", "4", "5", "6", "7","8", "9", "10", "11", "2", "13", "14","15", "16", "17", "18", "19", "20", "21"],
@@ -71,7 +71,7 @@ const OxygenLevel= () => {
       let result = response.data;
       console.log(result.length);
 
-      let shortResult = result.splice(result.length - 10, result.length);
+      let shortResult = result.splice(result.length - 20, result.length);
 
       const parsedLabels = shortResult.map(x => {
         const seconds = moment(x.date).get('seconds');
@@ -110,7 +110,7 @@ const OxygenLevel= () => {
       let publishSettings = JSON.stringify({ 'tempTime': settingsTempTime });
       console.log(publishSettings);
 
-      let result = client.publish('microlab/agro/device/ventilation/settings', publishSettings);
+      let result = client.publish('hearth/device/smart_watch/spo2/settings', publishSettings);
       console.log(result);
     } catch (error) {
       console.error(error);
