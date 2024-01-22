@@ -42,7 +42,7 @@ const Temperature = () => {
   async function getMessages() {
     try {
       const requestBodyControlTemperatura = {
-        "topic": "microlab/agro/air/temperature"
+        "topic": "hearth/device/smart_watch/temp"
       };
       const response = await axios.post('http://localhost:3001/api/messages/getByTopic', requestBodyControlTemperatura);
       let result = response.data;
@@ -109,7 +109,7 @@ const Temperature = () => {
 
   const [temp, setTemp] = useState(0);
 
-  const tempTopic = 'microlab/agro/air/temperature';
+  const tempTopic = 'hearth/device/smart_watch/temp';
 
 
   const mqttConnect = () => {
