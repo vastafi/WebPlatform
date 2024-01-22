@@ -27,8 +27,8 @@ import { host } from "../../config/mqtt.config";
 import { options } from "./temp";
 
 function createData(
-  name: String,
-  t1: String,
+  name,
+  t1,
 ) {
   return { name, t1};
 }
@@ -59,7 +59,8 @@ const Temperature = () => {
       let result = response.data;
       console.log(result.length);
 
-      let shortResult = result.splice(result.length - 20, result.length);
+      let shortResult = result.splice(-50);
+      //let shortResult = result.splice(result.length - 20, result.length);
       setMessages({
         labels: shortResult.map(x=> x.message_id),
         datasets:
@@ -90,23 +91,24 @@ const Temperature = () => {
   /*   Set Data */
   //const [settings, setSettings] = useState(null);
   const [settingsTempTime, setSettingsTempTime] = useState(0);
+  const [setPoint, setPointSettings] = useState(60);
 
   function setMqttData() {
     try {
-      let publishSettings = JSON.stringify({ 'set_point': settingsTempTime });
+      let publishSettings = JSON.stringify({ 'temp_c': settingsTempTime });
             console.log(publishSettings);
 
-      let result = client.publish('hearth/device/smart_watch/temp', publishSettings);
+      let result = client.publish('hearth/device/smart_watch/temp/temp_c', publishSettings);
       console.log(result);
     } catch (error) {
       console.error(error);
     }
   }
 
-  const changeTempSettingsHandler = (e) => {
-    setSettingsTempTime(e.target.value);
-    setPointSettings(e.target.value);
-  };
+  // const changeTempSettingsHandler = (e) => {
+  //   setSettingsTempTime(e.target.value);
+  //   setPointSettings(e.target.value);
+  // };
   
   /* MQTT */
   const [client, setClient] = useState(null);
@@ -114,8 +116,7 @@ const Temperature = () => {
 
   const [temperature, setTemp] = useState(0);
 
-  const tempTopic = 'hearth/device/smart_watch/temp_c';
-  const tempTopic1 = 'hearth/device/smart_watch/temp_f';
+  const tempTopic = 'hearth/device/smart_watch/temp';
 
   const mqttConnect = () => {
     setConnectStatus('Connecting');
@@ -134,7 +135,7 @@ const Temperature = () => {
         setConnectStatus('Connected');
 
         client.subscribe(tempTopic);
-        client.subscribe(tempTopic1);
+
 
       });
       client.on('error', (err) => {
@@ -151,17 +152,11 @@ const Temperature = () => {
           setTemp(JSON.parse(message.toString()).temperature);
         }
         console.log(message.toString());
-
-        if (topic === tempTopic1) {
-          setTemp(JSON.parse(message.toString()).temperature);
-        }
-        console.log(message.toString());
       });
     }
   }, [client]);
 
-
-  return (
+return (
     <DashboardLayout marginLeft={274}>
       <DashboardNavbar />
       <MDBox py={3}>
