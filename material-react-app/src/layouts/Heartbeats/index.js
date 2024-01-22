@@ -27,7 +27,7 @@ const Heartbeats = () => {
   const [messages, setMessages] = useState({});
   const [count, setCount] = useState(4);
   const [tempData, setTempData] = useState({
-    labels: ["Index1", "Index2", "Index3", "Index4", "Index5", "Index6", "Index7","Index8", "Index9", "Index10", "Index11", "Index12", "Index13", "Index14","Index15", "Index16", "Index17", "Index18", "Index19", "Index20", "Index21"],
+    labels: ["1", "2", "3", "4", "5", "6", "7","8", "9", "10", "11", "2", "13", "14","15", "16", "17", "18", "19", "20", "21"],
     datasets: [{
       label: "Heartbeats",
       data: data,
