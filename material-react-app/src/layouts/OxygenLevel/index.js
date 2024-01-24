@@ -52,7 +52,7 @@ const OxygenLevel= () => {
   const [tempData, setTempData] = useState({
     labels: ["1", "2", "3", "4", "5", "6", "7","8", "9", "10", "11", "2", "13", "14","15", "16", "17", "18", "19", "20", "21"],
     datasets: [{
-      label: "Temperatura",
+      label: "Oxygen Level",
       data: data,
       pointBorderColor: "transparent",
       pointStyle: false,
