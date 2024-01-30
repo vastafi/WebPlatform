@@ -64,10 +64,10 @@ const OxygenLevel= () => {
 
   async function getMessages() {
     try {
-      const requestBodyControlTemperatura = {
+      const requestSpo2 = {
         "topic": "hearth/device/smart_watch/spo2"
       };
-      const response = await axios.post('http://localhost:3001/api/messages/getByTopic', requestBodyControlTemperatura);
+      const response = await axios.post('http://localhost:3001/api/messages/getByTopic',requestSpo2);
       let result = response.data;
       console.log(result.length);
 

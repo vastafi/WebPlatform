@@ -51,10 +51,10 @@ const Temperature = () => {
 
   async function getMessages() {
     try {
-      const requestBodyControlTemperatura = {
+      const requestTemperatureC = {
         "topic": "hearth/device/smart_watch/temp"
       };
-      const response = await axios.post('http://localhost:3001/api/messages/getByTopic', requestBodyControlTemperatura);
+      const response = await axios.post('http://localhost:3001/api/messages/getByTopic', requestTemperatureC);
       let result = response.data;
       console.log(result.length);
 

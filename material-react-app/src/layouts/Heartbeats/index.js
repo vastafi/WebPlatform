@@ -52,6 +52,7 @@ const Heartbeats = () => {
 
   const [messages, setMessages] = useState({});
   const [count, setCount] = useState(68);
+  
 
   const [tempData, setTempData] = useState({
     labels: ["1", "2", "3", "4", "5", "6", "7","8", "9", "10", "11", "2", "13", "14","15", "16", "17", "18", "19", "20", "21"],
@@ -67,10 +68,10 @@ const Heartbeats = () => {
 
   async function getMessages() {
     try {
-      const requestBodyControlTemperatura = {
+      const requestHeartRate = {
         "topic": "hearth/device/smart_watch/bmp"
       };
-      const response = await axios.post('http://localhost:3001/api/messages/getByTopic', requestBodyControlTemperatura);
+      const response = await axios.post('http://localhost:3001/api/messages/getByTopic', requestHeartRate);
       let result = response.data;
       console.log(result.length);
 
